@@ -1,12 +1,5 @@
 github_users:
-  - torvalds
-  - alshedivat
+  - gabrielc1925
 
 github_repos:
-  - alshedivat/al-folio
-  - twbs/bootstrap
-  - jekyll/jekyll
-  - jquery/jquery
-  - FortAwesome/Font-Awesome
-  - jpswalsh/academicons
-  - mathjax/MathJax
+  - Gabrielc1925.github.io
