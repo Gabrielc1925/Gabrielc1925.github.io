@@ -5,7 +5,7 @@ basics:
   email: gabrielc1925@gmail.com
   phone: ""
   url: https://gabrielc1925.github.io/
-  summary: DevOps, Cloud Services, Management experience, Doctorate of Pharmacy
+  summary: DevOps, Cloud Services, Management Experience, Doctorate of Pharmacy
   location:
     countryCode: US
     state: Colorado
@@ -23,7 +23,7 @@ work:
     endDate: ""
     highlights: []
     url: https://www.linkedin.com/company/threeknots/
-    location: Denver, Colorado, United States
+    location: Denver, Colorado
   - name: Walgreens
     position: Pharmacy Manager in Denver
     startDate: 2021-08-31
@@ -49,7 +49,7 @@ work:
 
       Time period here was too short to fully resolve the myriad issues that these pharmacies currently face.
     url: https://www.linkedin.com/company/walgreens/
-    location: Denver, Colorado, United States
+    location: Denver, Colorado
   - name: Walgreens
     position: Pharmacy Manager in Taos
     startDate: 2017-05-31
@@ -91,7 +91,7 @@ work:
 
       Build relationships with team members throughout the store and from other cities to plan and to solve problems.
     url: https://www.linkedin.com/company/walgreens/
-    location: Taos, New Mexico, United States
+    location: Taos, New Mexico
   - name: OLIVE TREE PHARMACY
     position: Consultant
     startDate: 2017-02-28
@@ -110,7 +110,7 @@ work:
 
       Assisted in planning for future business development.
     url: https://www.linkedin.com/company/olive-tree-pharmacy/
-    location: Rio Rancho, New Mexico, United States
+    location: Rio Rancho, New Mexico
 education:
   - institution: The University of New Mexico
     area: Pharmacy
