@@ -12,7 +12,7 @@ name: 'Lighthouse-Badger-Easy'
 # DEFINE YOUR INPUTS AND TRIGGERS IN THE FOLLOWING
 ########################################################################
 
-# INPUTS as environmental variables (env) for not manually triggered workflows 
+# INPUTS as environmental variables (env) for not manually triggered workflows
 env:
   URLS: https://github.com/Gabrielc1925/Gabrielc1925.github.io # URL(s) to be checked e.g. 'https://github.com/sitdisch https://github.com/mythemeway'
   TOKEN_NAME: LIGHTHOUSE_BADGER_TOKEN # target token name; insert only the name never the real value e.g. 'LIGHTHOUSE_BADGER_TOKEN'
