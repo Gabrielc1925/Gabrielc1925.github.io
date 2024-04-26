@@ -110,13 +110,38 @@
       "name": "Pharmacy",
       "level": "Doctorate Postgraduate Education",
       "icon": "fa-solid fa-prescription-bottle",
-      "keywords": ["Compounding", "Community Pharmacy", "Hospital Pharmacy", "Healthcare Management", "Pharmacy Automation", "Clinical Research", "Pharmaceutical Industry", "Medication Therapy Management (MTM)", "Patient Counseling", "Certified Immunizer"]
+      "keywords": [
+        "Compounding",
+        "Community Pharmacy",
+        "Hospital Pharmacy",
+        "Healthcare Management",
+        "Pharmacy Automation",
+        "Clinical Research",
+        "Pharmaceutical Industry",
+        "Medication Therapy Management (MTM)",
+        "Patient Counseling",
+        "Certified Immunizer"
+      ]
     },
     {
       "name": "General Skills",
       "level": "Life-Long Learner",
       "icon": "fa-solid fa-briefcase",
-      "keywords": ["Microsoft Office", "Microsoft Excel", "Powerpoint", "Management", "Leadership", "Public Speaking", "Customer Service", "Healthcare Management", "Strategic Planning", "Strategy", "Medicine", "Clinical Research", "Project Management"]
+      "keywords": [
+        "Microsoft Office",
+        "Microsoft Excel",
+        "Powerpoint",
+        "Management",
+        "Leadership",
+        "Public Speaking",
+        "Customer Service",
+        "Healthcare Management",
+        "Strategic Planning",
+        "Strategy",
+        "Medicine",
+        "Clinical Research",
+        "Project Management"
+      ]
     }
   ],
 
