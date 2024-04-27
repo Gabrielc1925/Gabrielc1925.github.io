@@ -1,9 +1,9 @@
 basics:
   name: Gabriel Chavez
-  label: DevOps Engineer at Three Knots
-  image: ""
+  label: DevOps Apprentice at Three Knots
+  image: "prof_pic.jpg"
   email: gabrielc1925@gmail.com
-  phone: ""
+  phone: "(505)688-9404"
   url: https://gabrielc1925.github.io/
   summary: DevOps, Cloud Services, Management Experience, Doctorate of Pharmacy
   location:
@@ -18,7 +18,7 @@ basics:
       url: https://github.com/Gabrielc1925
 work:
   - name: Three Knots
-    position: DevOps Engineer
+    position: DevOps Apprentice
     startDate: 2024-01-31
     endDate: ""
     highlights: []

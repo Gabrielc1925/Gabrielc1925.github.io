@@ -11,10 +11,9 @@ description: > # the ">" symbol means to ignore newlines until "footer_text:"
   The CV for Gabriel Chavez.
 footer_text: >
   Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
-  Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
   Photos from <a href="https://unsplash.com" target="_blank">Unsplash</a>.
   <a href="https://www.flaticon.com/free-icons/programmer" title="programmer icons">Programmer icons created by Flat Icons - Flaticon</a>
-keywords: jekyll, jekyll-theme, academic-website, portfolio-website # add your own keywords or leave empty
+keywords: DevOps, CI/CD, Terraform, Kubernetes, AWS, Cloud, Automation # add your own keywords or leave empty
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: favicon.ico # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
@@ -41,7 +40,7 @@ repo_trophies:
 # will use title and url fields
 # Take a look to https://github.com/jekyll/jekyll-feed for more customization
 
-rss_icon: true
+rss_icon: false
 
 # -----------------------------------------------------------------------------
 # Layout
@@ -72,10 +71,10 @@ acm_id: # your dl.acm.org/profile/id
 blogger_url: # your blogger URL
 bluesky_url: # your bluesky URL
 dblp_url: # your DBLP profile url
-discord_id: # your discord id (18-digit unique numerical identifier)
+discord_id: 171856660384448512 # your discord id (18-digit unique numerical identifier)
 facebook_id: # your facebook id
 flickr_id: # your flickr id
-github_username: Gabrielc1925 # your GitHub user name
+github_username: gabrielc1925 # your GitHub user name
 gitlab_username: # your GitLab user name
 ieee_id: # your ieeexplore.ieee.org/author/id
 instagram_id: # your instagram id
@@ -83,7 +82,7 @@ kaggle_id: # your kaggle id
 keybase_username: # your keybase user name
 lastfm_id: # your lastfm id
 lattes_id: # your ID on Lattes (Brazilian Lattes CV)
-linkedin_username: # your LinkedIn user name
+linkedin_username: gabriel-chavez-pharmd # your LinkedIn user name
 mastodon_username: # your mastodon instance+username in the format instance.tld/@username
 medium_username: # your Medium username
 orcid_id: # your ORCID ID
@@ -108,8 +107,7 @@ x_username: # your X handle
 youtube_id: # your youtube channel id (youtube.com/@<youtube_id>)
 zotero_username: # your zotero username
 
-contact_note: Best way to contact me is via email, phone, or text message. >
-  You can even add a little note about which of these is the best way to reach you.
+contact_note: Best way to contact me is via email, phone, or text message.
 
 # -----------------------------------------------------------------------------
 # Analytics and search engine verification
@@ -592,10 +590,10 @@ jsonresume:
   - basics
   - work
   - education
-  - publications
+  #  - publications
   - projects
-  - volunteer
-  - awards
+  #  - volunteer
+  #  - awards
   - certificates
   - skills
   - languages
