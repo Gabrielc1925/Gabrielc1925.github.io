@@ -1,19 +1,12 @@
 ---
 layout: page
-title: Project 1
-description: Hosting completed site in AWS
-img: jj-ying-unsplash.jpg
+title: project 1
+description: a project with a background image
+img: assets/img/12.jpg
 importance: 1
 category: work
-related_publications: false
+related_publications: true
 ---
-
-This shall be the first project that I embark on here on this platform.
-I have used a site template to get this site up and running quickly, and it worked beautifully thanks to the hard work of the people who developed the template.
-
-My new goal is to figure out how to make the completed site propogate to AWS where I have a custom domain and I had previously had a resume hosted. My current setup at AWS is very lackluster compared to the polished product here on [Github](https://gabrielc1925.github.io/), and I would love to update it to make the most of the domain I paid money for and the work that I put in here.
-
-https://aws.amazon.com/blogs/devops/integrating-with-github-actions-ci-cd-pipeline-to-deploy-a-web-app-to-amazon-ec2/
 
 Every project has a beautiful feature showcase page.
 It's easy to include images in a flexible 3-column grid format.
