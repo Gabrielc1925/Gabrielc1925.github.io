@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://Gabrielc1925.github.io//sitemap.xml
+Sitemap: https://Gabrielc1925.github.io/sitemap.xml
