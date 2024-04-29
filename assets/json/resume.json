@@ -39,8 +39,16 @@
       "position": "Pharmacy Manager in Denver",
       "startDate": "2021-08-31",
       "endDate": "Current",
-      "highlights": [],
-      "summary": "Worked with neglected and understaffed pharmacies to improve team culture so they can perform at their best.\nEnsured that each pharmacy was compliant with all appropriate federal standards and local regulations.\nDelivered excellent patient care in two different pharmacies, each averaging 450 prescriptions per day.\nBegan the process of auditing long-neglected documentation and filing procedures to ensure legal compliance.\nImplemented changes in company policy from week to week as guidelines changed.\nIncreased employee performance engagement by discussing goals and making a culture of inclusion.\nDiscussed employee goals and improved communications to ensure that everyone was influencing our largest projects.  \nProject management - including broad efforts to control inventory and to ensure long-term quality assurance.\nTime period here was too short to fully resolve the myriad issues that these pharmacies currently face.",
+      "highlights": [
+        "Ensured that each pharmacy was compliant with all appropriate federal standards and local regulations.",
+        "Delivered excellent patient care in two different pharmacies, each averaging 450 prescriptions per day.",
+        "Began the process of auditing long-neglected documentation and filing procedures to ensure legal compliance.",
+        "Implemented changes in company policy from week to week as guidelines changed.",
+        "Increased employee performance engagement by discussing goals and making a culture of inclusion.",
+        "Discussed employee goals and improved communications to ensure that everyone was influencing our largest projects.",
+        "Project management - including broad efforts to control inventory and to ensure long-term quality assurance."
+      ],
+      "summary": "Worked with neglected and understaffed pharmacies to improve team culture so they can perform at their best.",
       "url": "https://www.linkedin.com/company/walgreens/",
       "location": "Denver, Colorado, United States"
     },
@@ -49,8 +57,25 @@
       "position": "Pharmacy Manager in Taos",
       "startDate": "2017-05-31",
       "endDate": "2021-08-31",
-      "highlights": [],
-      "summary": "Trained, managed, and developed a large number of technicians and pharmacists in customer service and safety.\nManaged pharmacist and technician budgets to ensure we were compliant legally and staffed to meet performance metrics.\nResponsible for discussing performance metrics and dispensing discipline where needed.\nImproved patient care through the use of MTM and by building a supportive network of provider relationships.\nAccountable for financial performance and customer service of the pharmacy in relation to chain expectations.\nProvided safe and excellent patient care and counseling in a pharmacy averaging 350 prescriptions per day.\nDeveloped the business for the company by improving adherence and increasing reimbursement.\nWorked with store and district leadership to ensure we met or exceeded all applicable standards.\nIncreased patient satisfaction significantly through a process of change and development of staff and practices.\nCompletely revamped the workflow and retrained every employee in multiple systems through formal instruction.\nLed team during many large changes, including software rollout and drastic changes in roles/expectations.\nProvided emotional and educational support & encouragement during the pandemic to help peers/patients.\nDeveloped constructive criticism skills further and gained experience with delivering timely feedback.\nAudited employee training compliance and created work plans that worked with our budget to remain efficient.\nBeing a remote location, I was responsible for creative problem solving of many types, including technical expertise.\nThis store was known to be a “problem” area, and we were able to build a reliable team to rectify that.\nBuild relationships with team members throughout the store and from other cities to plan and to solve problems.",
+      "highlights": [
+        "Managed pharmacist and technician budgets to ensure we were compliant legally and staffed to meet performance metrics.",
+        "Responsible for discussing performance metrics and dispensing discipline where needed.",
+        "Improved patient care through the use of MTM and by building a supportive network of provider relationships.",
+        "Accountable for financial performance and customer service of the pharmacy in relation to chain expectations.",
+        "Provided safe and excellent patient care and counseling in a pharmacy averaging 350 prescriptions per day.",
+        "Developed the business for the company by improving adherence and increasing reimbursement.",
+        "Worked with store and district leadership to ensure we met or exceeded all applicable standards.",
+        "Increased patient satisfaction significantly through a process of change and development of staff and practices.",
+        "Completely revamped the workflow and retrained every employee in multiple systems through formal instruction.",
+        "Led team during many large changes, including software rollout and drastic changes in roles/expectations.",
+        "Provided emotional and educational support & encouragement during the pandemic to help peers/patients.",
+        "Developed constructive criticism skills further and gained experience with delivering timely feedback.",
+        "Audited employee training compliance and created work plans that worked with our budget to remain efficient.",
+        "Being a remote location, I was responsible for creative problem solving of many types, including technical expertise.",
+        "This store was known to be a “problem” area, and we were able to build a reliable team to rectify that.",
+        "Build relationships with team members throughout the store and from other cities to plan and to solve problems."
+      ],
+      "summary": "Trained, managed, and developed a large number of technicians and pharmacists in customer service and safety.",
       "url": "https://www.linkedin.com/company/walgreens/",
       "location": "Taos, New Mexico, United States"
     },
@@ -59,9 +84,15 @@
       "position": "Consultant",
       "startDate": "2017-02-28",
       "endDate": "2017-04-30",
-      "highlights": [],
-      "summary": "Developed Standard Operating Procedures (SOPs) for a new business.\nDeveloped compounding recipes for a pharmaceutical grade cosmetic line.\nGuided product selection, marketing, and business operating procedures.\nPerformed non-sterile compounding for a variety of different dosage formulations.\nCounseled on the proper use of compounded medications and possible side effects to look out for.\nAssisted in planning for future business development.",
-      "url": "https://www.linkedin.com/company/olive-tree-pharmacy/",
+      "highlights": [
+        "Developed compounding recipes for a pharmaceutical grade cosmetic line.",
+        "Guided product selection, marketing, and business operating procedures.",
+        "Performed non-sterile compounding for a variety of different dosage formulations.",
+        "Counseled on the proper use of compounded medications and possible side effects to look out for.",
+        "Assisted in planning for future business development."
+      ],
+      "summary": "Developed Standard Operating Procedures (SOPs) for a new business.",
+      "url": "https://olivetreecompounding.com/",
       "location": "Rio Rancho, New Mexico, United States"
     }
   ],
@@ -89,14 +120,17 @@
     {
       "name": "Certified in Nonsterile Compounding",
       "issuer": "Fagron Academy",
-      "startDate": "2016-10-31"
+      "startDate": "2016-10-31",
+      "url": "https://www.linkedin.com/company/fagron-academy/about/"
     },
     {
       "name": "Amazon Web Services Cloud Practitioner",
       "issuer": "Amazon Web Services (AWS)",
       "endDate": "2027-01-31",
       "startDate": "2024-01-31",
-      "url": "https://www.credly.com/badges/a130de7e-e966-483a-84d5-edb663b0cbce/public_url"
+      "url": "https://www.credly.com/badges/a130de7e-e966-483a-84d5-edb663b0cbce/public_url",
+      "image": "/assets/img/aws-certified-cloud-practitioner.png",
+      "html": "<div data-iframe-width="150" data-iframe-height="270" data-share-badge-id="a130de7e-e966-483a-84d5-edb663b0cbce" data-share-badge-host="https://www.credly.com"></div><script type="text/javascript" async src="//cdn.credly.com/assets/utilities/embed.js"></script>"
     }
   ],
   "skills": [
