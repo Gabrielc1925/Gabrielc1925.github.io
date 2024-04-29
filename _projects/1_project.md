@@ -5,7 +5,6 @@ description: Hosting completed site in AWS
 img: jj-ying-unsplash.jpg
 importance: 1
 category: work
-related_publications: false
 ---
 
 This shall be the first project that I embark on here on this platform.
