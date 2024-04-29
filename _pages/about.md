@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: Get to know me better
+subtitle: From Pharmacy Management to the Tech World
 
 profile:
   align: right
@@ -11,7 +11,7 @@ profile:
   more_info: >
     <p>(505)688-9404</p>
     <p>Gabrielc1925@gmail.com</p>
-    <p>Aurora, Colorado 12345</p>
+    <p>Aurora, Colorado 80012</p>
 
 news: true # includes a list of news items
 selected_papers: false # includes a list of papers marked as "selected={true}"
