@@ -9,7 +9,7 @@ category: work
 
 This shall be the first project that I embark on here on this platform.
 
-I am going to be using project suggestions from [Medium](www.medium.com), as I think that will allow me to learn in whatever direction I choose, and will give me a good framework that will guide me in a direction without completely holding my hand.
+I am going to be using project suggestions from [Medium](https://www.medium.com), as I think that will allow me to learn in whatever direction I choose, and will give me a good framework that will guide me in a direction without completely holding my hand.
 
 The most difficult part, for me, will be figuring out how to document this effectively on this page so that I can explain what I did and what I learned from it.
 
