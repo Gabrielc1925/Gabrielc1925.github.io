@@ -7,7 +7,7 @@ tags: website, status-update
 categories: website-status
 ---
 
-I have completed the initial task of getting the website set up. This has overall been a very easy task thanks to all the work done by the team who developed this site layout. Many thanks to the [Al-Folio](https://github.com/alshedivat/al-folio) team for making this a very intuitive and pai free process.
+I have completed the initial task of getting the website set up. This has overall been a very easy task thanks to all the work done by the team who developed this site layout. Many thanks to the [Al-Folio](https://github.com/alshedivat/al-folio) team for making this a very intuitive and pain free process.
 
 I especially appreciate that there are wonderful example files for all the different types of content that I might want to write. The auto-checking Github Actions and the thorough README file and accompanying documentation made this whole process pain free. There are a couple formatting issues on my CV related to dates that I need to figure out, but other than that everything worked perfectly out of the box.
 
@@ -15,7 +15,9 @@ I especially appreciate that there are wonderful example files for all the diffe
 
 ## Next Steps
 
-My next task is going to be deciding on a first project to document here, and then getting it set up. I'm thinking that I would like to use the AWS architecture that I already have set up for website hosting, and the domain name that I already paid for, and I would like to figure out a way to have this completed site replicated there automatically. I'm sure I could do it manually, but I want to use automation tools to make this a seamless process that removes the possibility of user error from the process.
+My next task is going to be deciding on a first project to document here, and then getting it set up. I'll have to decide bvetween starting with an "easier" project, or jumping right into it and getting the full experience.
 
 I will post a first project page to show the plan, and will update it when it is complete.
 <a href="/projects/1_project">Project 1</a> will be the title for now, but I intend to name it something more elegant and intuitive later.
+
+Follow along with me as I learn and pave a path forward!

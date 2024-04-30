@@ -1,13 +1,22 @@
 ---
 layout: page
 title: Project 1
-description: Hosting completed site in AWS
-img: /assets/img/jj-ying-unsplash.jpg
+description: DevSecOps Kubernetes Project
+img: /assets/img/kubernetes_unsplash_small.jpg
 importance: 1
 category: work
 ---
 
 This shall be the first project that I embark on here on this platform.
-I have used a site template to get this site up and running quickly, and it worked beautifully thanks to the hard work of the people who developed the template.
 
-My new goal is to figure out how to make the completed site propogate to AWS where I have a custom domain and I had previously had a resume hosted. My current setup at AWS is very lackluster compared to the polished product here on [Github](https://gabrielc1925.github.io/), and I would love to update it to make the most of the domain I paid money for and the work that I put in here.
+I am going to be using project suggestions from [Medium](www.medium.com), as I think that will allow me to learn in whatever direction I choose, and will give me a good framework that will guide me in a direction without completely holding my hand.
+
+The most difficult part, for me, will be figuring out how to document this effectively on this page so that I can explain what I did and what I learned from it.
+
+Updates will be posted as I get things figured out. Links and images will be posted when I can, after I have determined the safety of doing so.
+
+Thank you for reading!
+
+<hr>
+
+First project is being taken from https://blog.devops.dev/end-to-end-devsecops-kubernetes-project-4259f90722ef
