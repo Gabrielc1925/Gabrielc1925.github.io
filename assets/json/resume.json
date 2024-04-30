@@ -129,8 +129,7 @@
       "endDate": "2027-01-31",
       "startDate": "2024-01-31",
       "url": "https://www.credly.com/badges/a130de7e-e966-483a-84d5-edb663b0cbce/public_url",
-      "image": "/assets/img/aws-certified-cloud-practitioner.png",
-      "html": "<div data-iframe-width="150" data-iframe-height="270" data-share-badge-id="a130de7e-e966-483a-84d5-edb663b0cbce" data-share-badge-host="https://www.credly.com"></div><script type="text/javascript" async src="//cdn.credly.com/assets/utilities/embed.js"></script>"
+      "image": "/assets/img/aws-certified-cloud-practitioner.png"
     }
   ],
   "skills": [
