@@ -207,9 +207,9 @@
       "keywords": ["Permaculture", "Water-wise Landscaping", "Semihydroponics", "Leca", "Tropical Houseplants"]
     },
     {
-      "name": "Woodworking",
+      "name": "Making/Fixing",
       "icon": "fa-solid fa-hammer",
-      "keywords": []
+      "keywords": ["Woodworking", "Electrical", "Welding", "Plumbing", "Home Repair", "Drywall", "Painting", "3D Printing", "Networking"]
     }
   ],
   "references": [
