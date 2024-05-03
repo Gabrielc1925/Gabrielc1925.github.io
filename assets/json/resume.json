@@ -1,200 +1,178 @@
 {
   "basics": {
-    "name": "Albert Einstein",
-    "label": "Scientist",
+    "name": "Gabriel Chavez",
+    "label": "DevOps Apprentice at Three Knots",
     "image": "",
-    "email": "albert@einstein.de",
-    "phone": "(912) 123-4567",
-    "url": "https://alshedivat.github.io/al-folio/",
-    "summary": "A German-born theoretical physicist, widely ranked among the greatest and most influential scientists of all time",
+    "email": "gabrielc1925@gmail.com",
+    "phone": "",
+    "url": "https://gabrielc1925.github.io/",
+    "summary": "DevOps, Cloud Services, Management experience, Doctorate of Pharmacy",
     "location": {
-      "address": "2712 Broadway St",
-      "postalCode": "CA 94115",
-      "city": "San Francisco",
       "countryCode": "US",
-      "region": "California"
+      "state": "Colorado"
     },
     "profiles": [
       {
-        "network": "Twitter",
-        "username": "AlbertEinstein",
-        "url": "https://twitter.com/AlbertEinstein"
+        "network": "LinkedIn",
+        "username": "gabriel-chavez-pharmd",
+        "url": "https://www.linkedin.com/in/gabriel-chavez-pharmd/"
+      },
+      {
+        "network": "GitHub",
+        "username": "gabrielc1925",
+        "url": "https://github.com/Gabrielc1925"
       }
     ]
   },
   "work": [
     {
-      "name": "Institute for Advanced Study, Princeton University",
-      "position": "Professor of Theoretical Physics",
-      "url": "https://example.com",
-      "startDate": "1933-01-01",
-      "endDate": "1955-01-01",
-      "summary": "Teaching at Palmer Physical Laboratory (now 302 Frist Campus Center). While not a professor at Princeton, I associated with the physics professors and continued to give lectures on campus.",
-      "highlights": ["Relativity"]
-    }
-  ],
-  "volunteer": [
-    {
-      "organization": "People's Climate March",
-      "location": "Zurich, Switzerland",
-      "position": "Lead Organizer",
-      "url": "https://example.com",
-      "startDate": "2014-04-01",
-      "endDate": "2015-07-01",
-      "summary": "Lead organizer for the New York City branch of the People's Climate March, the largest climate march in history.",
-      "highlights": ["Awarded 'Climate Hero' award by Greenpeace for my efforts organizing the march.", "Men of the year 2014 by Time magazine"]
+      "name": "Three Knots",
+      "position": "DevOps Apprentice",
+      "startDate": "2024-01-31",
+      "endDate": "2099-01-01",
+      "highlights": [],
+      "url": "https://www.linkedin.com/company/threeknots/",
+      "location": "Denver, Colorado, United States"
     }
   ],
   "education": [
     {
-      "institution": "University of Zurich, Zurich, Switzerland",
-      "location": "Zurich, Switzerland",
-      "url": "https://www.uzh.ch/",
-      "area": "Software Development",
-      "studyType": "PhD",
-      "startDate": "1905-01-01",
-      "endDate": "1905-01-01",
-      "score": "10",
-      "courses": ["Theory of Relativity"]
-    }
-  ],
-  "awards": [
+      "institution": "The University of New Mexico",
+      "area": "Pharmacy",
+      "studyType": "Doctor of Pharmacy (PharmD)",
+      "year": "2009-2017",
+      "score": "",
+      "courses": []
+    },
     {
-      "title": "Nobel Prize in Physics",
-      "date": "1921-11-01",
-      "awarder": "Royal Swedish Academy of Sciences",
-      "url": "https://www.nobelprize.org/prizes/physics/1921/einstein/biographical/",
-      "summary": "The Nobel Prizes are five separate prizes that, according to Alfred Nobel's will of 1895, are awarded to 'those who, during the preceding year, have conferred the greatest benefit to humankind.'"
+      "institution": "Central New Mexico Community College",
+      "area": "Pre-Pharmacy Studies",
+      "studyType": "",
+      "year": "2010-2013",
+      "score": "",
+      "courses": []
     }
   ],
   "certificates": [
     {
-      "name": "Machine Learning",
-      "date": "2018-01-01",
-      "issuer": "Stanford University",
-      "url": "https://example.com",
-      "icon": "fa-solid fa-location-dot"
+      "name": "Certified in Nonsterile Compounding",
+      "issuer": "Fagron Academy",
+      "url": "https://www.linkedin.com/company/fagron-academy/about/"
     },
     {
-      "name": "Quantum Computing",
-      "date": "2018-01-01",
-      "issuer": "Stanford University",
-      "url": "https://example.com",
-      "icon": "fa-solid fa-tag"
-    },
-    {
-      "name": "Quantum Information",
-      "date": "2018-01-01",
-      "issuer": "Stanford University",
-      "url": "https://example.com",
-      "icon": "fa-solid fa-envelope"
-    },
-    {
-      "name": "Quantum Cryptography",
-      "date": "2018-01-01",
-      "issuer": "Stanford University",
-      "url": "https://example.com",
-      "icon": "fa-solid fa-hashtag"
-    },
-    {
-      "name": "Quantum Communication",
-      "date": "2018-01-01",
-      "issuer": "Stanford University",
-      "url": "https://example.com",
-      "icon": "fa-solid fa-calendar"
-    },
-    {
-      "name": "Quantum Teleportation",
-      "date": "2018-01-01",
-      "issuer": "Stanford University",
-      "url": "https://example.com",
-      "icon": "fa-solid fa-clipboard-check"
-    }
-  ],
-  "publications": [
-    {
-      "name": "Zur Elektrody/namik bewegter Körper",
-      "publisher": "Annalen der Physik",
-      "releaseDate": "1905-06-30",
-      "url": "https://en.wikisource.org/wiki/Translation:On_the_Electrodynamics_of_Moving_Bodies",
-      "summary": "It concerned an interpretation of the Michelson–Morley experiment and the properties of light and time. Special relativity incorporates the principle that the speed of light is the same for all inertial observers regardless of the state of motion of the source."
-    },
-    {
-      "name": "Über einen die Erzeugung und Verwandlung des Lichtes betreffenden heuristischen Gesichtspunkt",
-      "publisher": "Annalen der Physik",
-      "releaseDate": "1905-03-18",
-      "url": "https://de.wikisource.org/wiki/Über_einen_die_Erzeugung_und_Verwandlung_des_Lichtes_betreffenden_heuristischen_Gesichtspunkt",
-      "summary": "In the second paper, he applied the quantum theory to light to explain the photoelectric effect. In particular, he used the idea of light quanta (photons) to explain experimental results, but stressed the importance of the experimental results. The importance of his work on the photoelectric effect earned him the Nobel Prize in Physics in 1921."
-    },
-    {
-      "name": "Die Grundlage der allgemeinen Relativitätstheorie",
-      "publisher": "Annalen der Physik",
-      "releaseDate": "1916-03-20",
-      "url": "https://de.wikisource.org/wiki/Die_Grundlage_der_allgemeinen_Relativitätstheorie",
-      "summary": "The publication of the theory of general relativity made him internationally famous. He was professor of physics at the universities of Zurich (1909–1911) and Prague (1911–1912), before he returned to ETH Zurich (1912–1914)."
+      "name": "Amazon Web Services Cloud Practitioner",
+      "issuer": "Amazon Web Services (AWS)",
+      "url": "https://www.credly.com/badges/a130de7e-e966-483a-84d5-edb663b0cbce/public_url",
+      "image": "/assets/img/aws-certified-cloud-practitioner.png"
     }
   ],
   "skills": [
     {
-      "name": "Physics",
-      "level": "Master",
-      "icon": "fa-solid fa-hashtag",
+      "name": "DevOps",
+      "level": "Beginner",
+      "icon": "fa-solid fa-laptop-code",
+      "keywords": ["Ansible", "Terraform", "Packer", "Amazon Web Services (AWS)", "Amazon Web Services", "Cloud Migration", "Cloud Services"]
+    },
+    {
+      "name": "Pharmacy",
+      "level": "Doctorate Postgraduate Education",
+      "icon": "fa-solid fa-prescription-bottle",
       "keywords": [
-        "Quantum Mechanics",
-        "Quantum Computing",
-        "Quantum Information",
-        "Quantum Cryptography",
-        "Quantum Communication",
-        "Quantum Teleportation"
+        "Compounding",
+        "Community Pharmacy",
+        "Hospital Pharmacy",
+        "Healthcare Management",
+        "Pharmacy Automation",
+        "Clinical Research",
+        "Pharmaceutical Industry",
+        "Medication Therapy Management (MTM)",
+        "Patient Counseling",
+        "Certified Immunizer"
+      ]
+    },
+    {
+      "name": "General Skills",
+      "level": "Life-Long Learner",
+      "icon": "fa-solid fa-briefcase",
+      "keywords": [
+        "Microsoft Office",
+        "Microsoft Excel",
+        "Powerpoint",
+        "Management",
+        "Leadership",
+        "Public Speaking",
+        "Customer Service",
+        "Healthcare Management",
+        "Strategic Planning",
+        "Strategy",
+        "Medicine",
+        "Clinical Research",
+        "Project Management"
       ]
     }
   ],
+
   "languages": [
     {
-      "language": "German",
+      "language": "English",
       "fluency": "Native speaker",
       "icon": ""
     },
     {
-      "language": "English",
-      "fluency": "Fluent",
+      "language": "Spanish",
+      "fluency": "Low",
+      "icon": ""
+    },
+    {
+      "language": "Arabic",
+      "fluency": "Almost non-existent",
       "icon": ""
     }
   ],
   "interests": [
     {
-      "name": "Physics",
-      "icon": "fa-solid fa-tag",
-      "keywords": [
-        "Quantum Mechanics",
-        "Quantum Computing",
-        "Quantum Information",
-        "Quantum Cryptography",
-        "Quantum Communication",
-        "Quantum Teleportation"
-      ]
+      "name": "Brazilian Jiu-Jitsu",
+      "icon": "fa-solid fa-user-ninja",
+      "keywords": []
+    },
+    {
+      "name": "Gardening",
+      "icon": "fa-solid fa-leaf",
+      "keywords": ["Permaculture", "Water-wise Landscaping", "Semihydroponics", "Leca", "Tropical Houseplants"]
+    },
+    {
+      "name": "Making/Fixing",
+      "icon": "fa-solid fa-hammer",
+      "keywords": ["Woodworking", "Electrical", "Welding", "Plumbing", "Home Repair", "Drywall", "Painting", "3D Printing", "Networking"]
     }
   ],
   "references": [
     {
-      "name": "Professor John Doe",
-      "icon": "fa-solid fa-laptop",
-      "reference": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum, diam quis convallis euismod, arcu mi ullamcorper lorem, a vestibulum nunc magna at sem. Sed in risus ac felis varius blandit. D"
+      "name": "Michael Jerome",
+      "icon": "fa-solid fa-prescription-bottle",
+      "reference": "Pharmacy Operations Manager - Worked with at Walgreens - Michael was a subordinate, but was responsible for overseeing the technicians and worked with me daily."
     },
     {
-      "name": "Professor John Doe",
-      "icon": "fa-solid fa-thumbtack",
-      "reference": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum, diam quis convallis euismod, arcu mi ullamcorper lorem, a vestibulum nunc magna at sem. Sed in risus ac felis varius blandit. D"
+      "name": "Dr. Kristine Quon",
+      "icon": "fa-solid fa-pills",
+      "reference": "Staff Pharmacist - Worked with at Walgreens - Kristine was a subordinate, but was the other half of the coin to keeping the pharmacy running smoothly.  Where I put stuff down, she picked it up and vice versa."
+    },
+    {
+      "name": "Taifur Asif",
+      "icon": "fa-solid fa-code-branch",
+      "reference": "Main mentor in DevOps, and owner of Three Knots consulting firm.  Met with him virtually for over in an async manner, to get new project ideas and help working though problems"
+    },
+    {
+      "name": "Saad Momandi",
+      "icon": "fa-solid fa-code-merge",
+      "reference": "DevOps Mentor, worked with him at Three Knots.  Had weekly meetings for a while to help me work through problems"
     }
   ],
   "projects": [
     {
-      "name": "Quantum Computing",
-      "summary": "Quantum computing is the use of quantum-mechanical phenomena such as superposition and entanglement to perform computation. Computers that perform quantum computations are known as quantum computers.",
-      "highlights": ["Quantum Teleportation", "Quantum Cryptography"],
-      "startDate": "2018-01-01",
-      "endDate": "2018-01-01",
-      "url": "https://example.com"
+      "name": "Listed online",
+      "summary": "Please check my website for details on my previous projects",
+      "url": "https://gabrielc1925.github.io/projects/"
     }
   ]
 }
