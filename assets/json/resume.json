@@ -55,8 +55,7 @@
     {
       "name": "Walgreens",
       "position": "Pharmacy Manager in Taos",
-      "startDate": "2017-05-31",
-      "endDate": "2021-08-31",
+      "year": "2017-2021",
       "highlights": [
         "Managed pharmacist and technician budgets to ensure we were compliant legally and staffed to meet performance metrics.",
         "Responsible for discussing performance metrics and dispensing discipline where needed.",
@@ -82,8 +81,7 @@
     {
       "name": "OLIVE TREE PHARMACY",
       "position": "Consultant",
-      "startDate": "2017-02-28",
-      "endDate": "2017-04-30",
+      "year": "2017-2017",
       "highlights": [
         "Developed compounding recipes for a pharmaceutical grade cosmetic line.",
         "Guided product selection, marketing, and business operating procedures.",
@@ -101,8 +99,7 @@
       "institution": "The University of New Mexico",
       "area": "Pharmacy",
       "studyType": "Doctor of Pharmacy (PharmD)",
-      "startDate": "2009-12-31",
-      "endDate": "2017-12-31",
+      "year": "2009-2017",
       "score": "",
       "courses": []
     },
@@ -110,8 +107,7 @@
       "institution": "Central New Mexico Community College",
       "area": "Pre-Pharmacy Studies",
       "studyType": "",
-      "startDate": "2010-12-31",
-      "endDate": "2013-12-31",
+      "year": "2010-2013",
       "score": "",
       "courses": []
     }
@@ -120,14 +116,11 @@
     {
       "name": "Certified in Nonsterile Compounding",
       "issuer": "Fagron Academy",
-      "startDate": "2016-10-31",
       "url": "https://www.linkedin.com/company/fagron-academy/about/"
     },
     {
       "name": "Amazon Web Services Cloud Practitioner",
       "issuer": "Amazon Web Services (AWS)",
-      "endDate": "2027-01-31",
-      "startDate": "2024-01-31",
       "url": "https://www.credly.com/badges/a130de7e-e966-483a-84d5-edb663b0cbce/public_url",
       "image": "/assets/img/aws-certified-cloud-practitioner.png"
     }
@@ -236,12 +229,9 @@
   ],
   "projects": [
     {
-      "name": "**Coming soon**",
-      "summary": "This is where the summary goes",
-      "highlights": ["tags, highlights"],
-      "startDate": "????-??-??",
-      "endDate": "????-??-??",
-      "url": "https://example.com"
+      "name": "Listed online",
+      "summary": "Please check my website for details on my previous projects",
+      "url": "https://gabrielc1925.github.io/projects/"
     }
   ]
 }
