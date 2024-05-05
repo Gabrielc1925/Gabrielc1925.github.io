@@ -54,7 +54,8 @@
     {
       "name": "Walgreens",
       "position": "Pharmacy Manager in Taos",
-      "year": "2017-2021",
+      "startDate": "2017-05-31",
+      "endDate": "2021-08-31",
       "highlights": [
         "Managed pharmacist and technician budgets to ensure we were compliant legally and staffed to meet performance metrics.",
         "Responsible for discussing performance metrics and dispensing discipline where needed.",
@@ -74,12 +75,14 @@
         "Build relationships with team members throughout the store and from other cities to plan and to solve problems."
       ],
       "summary": "Trained, managed, and developed a large number of technicians and pharmacists in customer service and safety.",
-      "url": "https://www.linkedin.com/company/walgreens/"
+      "url": "https://www.linkedin.com/company/walgreens/",
+      "location": "Taos, New Mexico, United States"
     },
     {
       "name": "OLIVE TREE PHARMACY",
       "position": "Consultant",
-      "year": "2017-2017",
+      "startDate": "2017-02-28",
+      "endDate": "2017-04-30",
       "highlights": [
         "Developed compounding recipes for a pharmaceutical grade cosmetic line.",
         "Guided product selection, marketing, and business operating procedures.",
@@ -88,7 +91,8 @@
         "Assisted in planning for future business development."
       ],
       "summary": "Developed Standard Operating Procedures (SOPs) for a new business.",
-      "url": "https://olivetreecompounding.com/"
+      "url": "https://olivetreecompounding.com/",
+      "location": "Rio Rancho, New Mexico, United States"
     }
   ],
   "education": [
@@ -96,7 +100,8 @@
       "institution": "The University of New Mexico",
       "area": "Pharmacy",
       "studyType": "Doctor of Pharmacy (PharmD)",
-      "year": "2009-2017",
+      "startDate": "2009-12-31",
+      "endDate": "2017-12-31",
       "score": "",
       "courses": []
     },
@@ -104,7 +109,8 @@
       "institution": "Central New Mexico Community College",
       "area": "Pre-Pharmacy Studies",
       "studyType": "",
-      "year": "2010-2013",
+      "startDate": "2010-12-31",
+      "endDate": "2013-12-31",
       "score": "",
       "courses": []
     }
@@ -113,11 +119,14 @@
     {
       "name": "Certified in Nonsterile Compounding",
       "issuer": "Fagron Academy",
+      "startDate": "2016-10-31",
       "url": "https://www.linkedin.com/company/fagron-academy/about/"
     },
     {
       "name": "Amazon Web Services Cloud Practitioner",
       "issuer": "Amazon Web Services (AWS)",
+      "endDate": "2027-01-31",
+      "startDate": "2024-01-31",
       "url": "https://www.credly.com/badges/a130de7e-e966-483a-84d5-edb663b0cbce/public_url",
       "image": "/assets/img/aws-certified-cloud-practitioner.png"
     }
