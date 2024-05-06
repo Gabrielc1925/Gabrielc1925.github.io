@@ -15,9 +15,8 @@ I especially appreciate that there are wonderful example files for all the diffe
 
 ## Next Steps
 
-My next task is going to be deciding on a first project to document here, and then getting it set up. I'll have to decide bvetween starting with an "easier" project, or jumping right into it and getting the full experience.
+My next task is going to be continuing to work on the collaborative project I have going with a few friends, the goal of which is to build a website template for easy deployment by a mosque. I will be learning more coding and development-centric skills to enable that, and may post separate projects for each language as I learn more.
 
-I will post a first project page to show the plan, and will update it when it is complete.
-<a href="/projects/1_project">Project 1</a> will be the title for now, but I intend to name it something more elegant and intuitive later.
+For now, you can follow along with my projects using the menu at the top of the page. Info on my main project can be found in the <a href="/projects/Masjid_Website">Masjid_Website </a> project page.
 
 Follow along with me as I learn and pave a path forward!
