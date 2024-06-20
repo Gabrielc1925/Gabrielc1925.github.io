@@ -32,7 +32,7 @@
       "endDate": "2099-01-01",
       "summary": "Worked with Docker, VirtualBox, and AWS.  Collaborated on a project to deploy a containerized website solution for mosques, with optional features and easy setup and customization",
       "url": "https://www.linkedin.com/company/threeknots/",
-      "highlights": ["Docker", "AWS", "Slack", "Jira", "GitHub"]
+      "highlights": ["Docker", "AWS", "Slack", "Jira", "GitHub", "Javascript", "JSON", "YAML"]
     },
     {
       "name": "Walgreens",
@@ -134,7 +134,18 @@
       "name": "DevOps",
       "level": "Beginner",
       "icon": "fa-solid fa-laptop-code",
-      "keywords": ["Ansible", "Terraform", "Packer", "Amazon Web Services (AWS)", "Amazon Web Services", "Cloud Migration", "Cloud Services"]
+      "keywords": [
+        "Ansible",
+        "Terraform",
+        "Docker",
+        "Amazon Web Services (AWS)",
+        "Amazon Web Services",
+        "Cloud Migration",
+        "Cloud Services",
+        "Javascript",
+        "JSON",
+        "YAML"
+      ]
     },
     {
       "name": "Pharmacy",
@@ -223,7 +234,7 @@
     {
       "name": "Taifur Asif",
       "icon": "fa-solid fa-code-branch",
-      "reference": "Main mentor in DevOps, and owner of Three Knots consulting firm.  Met with him virtually for over in an async manner, to get new project ideas and help working though problems"
+      "reference": "Main mentor in DevOps, and owner of Three Knots consulting firm.  Met with him virtually for over a year in an async manner, to get new project ideas and help working though problems"
     },
     {
       "name": "Saad Momandi",

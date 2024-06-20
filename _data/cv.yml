@@ -24,6 +24,10 @@ work:
     highlights: []
     url: https://www.linkedin.com/company/threeknots/
     location: Denver, Colorado
+    summary: >-
+      Learned DevOps practices and used various development languages to achieve solutions while developing with a team of like-minded volunteers.
+      Worked with Docker, VirtualBox, GitHub, Slack, and AWS.  
+      Collaborated on a project to develop a containerized and easily deployable website solution for mosques, with optional features and easy setup/configuration.
   - name: Walgreens
     position: Pharmacy Manager in Denver
     startDate: 2021-08-31
@@ -150,6 +154,7 @@ skills:
       - Javascript
       - Docker
       - YAML
+      - JSON
   - name: Pharmacy
     level: Doctorate Postgraduate Education
     icon: fa-solid fa-prescription-bottle
