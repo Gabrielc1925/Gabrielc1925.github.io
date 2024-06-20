@@ -147,6 +147,9 @@ skills:
       - Amazon Web Services
       - Cloud Migration
       - Cloud Services
+      - Javascript
+      - Docker
+      - YAML
   - name: Pharmacy
     level: Doctorate Postgraduate Education
     icon: fa-solid fa-prescription-bottle
@@ -218,7 +221,7 @@ references:
   - name: Taifur Asif
     icon: fa-solid fa-code-branch
     reference: Main mentor in DevOps, and owner of Three Knots consulting firm.  Met
-      with him virtually for over in an async manner, to get new project ideas
+      with him virtually for over a year in an async manner, to get new project ideas
       and help working though problems
   - name: Saad Momandi
     icon: fa-solid fa-code-merge
