@@ -11,7 +11,7 @@ env:
   HCP_CLIENT_SECRET: ${{ secrets.HCP_CLIENT_SECRET }}
   HCP_PROJECT_ID: ${{ secrets.HCP_PROJECT_ID }}
   HCP_ORGANIZATION_ID: ${{ secrets.HCP_ORGANIZATION_ID }}
-  HCP_BUCKET_NAME: "Gabrielc1925_github_io_"
+  HCP_BUCKET_NAME: "Gabrielc1925_github_io"
 
 jobs:
   build-artifact:
