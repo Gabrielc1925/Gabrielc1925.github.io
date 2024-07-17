@@ -18,3 +18,12 @@ packer {
     }
   }
 }
+
+data "http" "github" {
+  url = "https://github.com/gabrielc1925/gabrielc1925.github.io/tree/gh-pages/_pages"
+
+  # Optional request headers
+  request_headers = {
+    Accept = "application/json"
+  }
+}

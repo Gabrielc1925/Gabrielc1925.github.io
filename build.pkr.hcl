@@ -13,12 +13,13 @@ source "amazon-ebs" "github-pages" {
   instance_type  = "t2.micro"
   ssh_username   = "ec2-user"
   ami_name    = "Gabrielc1925-github-io_{{timestamp}}"
+  ami_regions = ["us-east-1"]
 }
 
 build {
   # HCP Packer settings
   hcp_packer_registry {
-    bucket_name = "Gabrielc1925_github_io"
+    bucket_name = "Gabrielc1925-github-io"
     description = <<EOT
 This is an image for a backup of the github pages site for gabrielc1925
     EOT
@@ -31,12 +32,6 @@ This is an image for a backup of the github pages site for gabrielc1925
   sources = [
     "source.amazon-ebs.github-pages",
   ]
-
-#  # systemd unit for HashiCups service
-#  provisioner "file" {
-#    source      = "hashicups.service"
-#    destination = "/tmp/hashicups.service"
-#  }
 
   # Set up Nginx with HTML files from github pages
   provisioner "shell" {
