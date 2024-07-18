@@ -11,7 +11,7 @@ source "amazon-ebs" "github-pages" {
   region = "us-east-1"
   source_ami    = "ami-04a81a99f5ec58529"
   instance_type  = "t2.micro"
-  ssh_username   = "ec2-user"
+  ssh_username   = "ubuntu"
   ami_name    = "Gabrielc1925-github-io_{{timestamp}}"
   ami_regions = ["us-east-1"]
 }
