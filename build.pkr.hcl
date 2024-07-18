@@ -9,7 +9,7 @@ packer {
 
 source "amazon-ebs" "github-pages" {
   region = "us-east-1"
-  source_ami    = "ami-0b72821e2f351e396"
+  source_ami    = "ami-04a81a99f5ec58529"
   instance_type  = "t2.micro"
   ssh_username   = "ec2-user"
   ami_name    = "Gabrielc1925-github-io_{{timestamp}}"
