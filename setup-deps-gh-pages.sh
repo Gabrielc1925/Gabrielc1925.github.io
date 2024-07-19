@@ -37,7 +37,7 @@ sudo cp -f nginx.conf /etc/nginx
 sudo mkdir /var/www/gabrielc1925.github.io
 cd ~/Gabrielc1925.github.io
 git checkout gh-pages
-sudo cp ~/Gabrielc1925.github.io/{_pages/dropdown,assets,blog,cv,news,projects,repositories,workflow,404.html,feed.xml,index.html,robots.txt,sitemap.xml} /var/www/gabrielc1925.github.io
+sudo cp -r ~/Gabrielc1925.github.io/{_pages/dropdown,assets,blog,cv,news,projects,repositories,workflow,404.html,feed.xml,index.html,robots.txt,sitemap.xml} /var/www/gabrielc1925.github.io
 
 # Reload nginx
 sudo nginx -s reload
