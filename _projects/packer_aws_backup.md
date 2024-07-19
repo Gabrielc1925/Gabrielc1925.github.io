@@ -14,11 +14,15 @@ This first step in the process is to use Packer to create an Amazon Machine Imag
 
 The files for this project can be found in the Github repo for this website: [github.com/gabrielc1925/gabrielc1925.github.io](https://github.com/Gabrielc1925/Gabrielc1925.github.io).
 
-The files use in this basic Packer deployment are:
-"/build.pkr.hcl"
-"/setup-deps-gh-pages.sh"
-"/.github/workflows/build-deploy-packer-aws.yml"
+``The files use in this basic Packer deployment are:
+`
+"/build.pkr.hcl",
+"/setup-deps-gh-pages.sh",
+"/.github/workflows/build-deploy-packer-aws.yml",
+and
 "/.github/scripts/create_channel_version.sh"
+
+````
 
 This workflow is triggered by the "build-deploy-packer-aws.yml" file.
 
@@ -32,7 +36,7 @@ push:
   tags: ["v[0-9].[0-9]+.[0-9]+"]
   branches:
     - "gh-pages"
-```
+````
 
 The environment variables and where to find them are then defined, and then the jobs block begins.
 The first job copies the repo with checkout and links it in an environment variable so that it can be accessed by later parts of the gh-actions scripts. It then links the AWS credentials stored in the gh secrets manager to local env variables for this set of functions.
@@ -60,6 +64,7 @@ The gh-actions script then begins to run Packer. It initializes the plugins requ
 Finally, it records the Packer version fingerprint for use by later scripts and applications.
 
 ```yml file=build-deploy-packer-aws.yml
+
     - name: Packer Init
         run: packer init .
 
@@ -78,11 +83,13 @@ Finally, it records the Packer version fingerprint for use by later scripts and 
             build=$(jq -r '.builds[] | select(.packer_run_uuid == "'"$last_run_uuid"'")' "./packer_manifest.json")
             version_fingerprint=$(echo "$build" | jq -r '.custom_data.version_fingerprint')
             echo "::set-output name=version_fingerprint::$version_fingerprint"
+
 ```
 
 Packer build begins by reading the build.pkr.hcl file and loading the plugins listed. It then lists the source for the AMI we will be building and provisioning. I went with a lightweight and low cost Ubuntu LTS 22.04 image as I do not need more than that for this project.
 
 ```hcl file=build.pkr.hcl
+
     packer {
     required_plugins {
         amazon = {
@@ -100,11 +107,13 @@ Packer build begins by reading the build.pkr.hcl file and loading the plugins li
     ami_name    = "Gabrielc1925-github-io_{{timestamp}}"
     ami_regions = ["us-east-1"]
     }
+
 ```
 
 The next step is to begin our build block. The first step is to connect to the HCP packer registry and create a bucket to track our changes and store any completed AMIs in later steps.
 
 ```hcl file=build.pkr.hcl
+
     build {
     # HCP Packer settings
     hcp_packer_registry {
@@ -117,6 +126,7 @@ The next step is to begin our build block. The first step is to connect to the H
         "hashicorp-learn" = "learn-packer-github-actions",
         }
     }
+    }
 ```
 
 After that the build block specifies the source it is acting on (we only have one above, so this is it), and begins to provision the base image for us. It then runs a provisioner block when the EC2 instance is running, and inputs the commands from the shell scripts specified by the file named "setup-deps-gh-pages.sh."
@@ -124,6 +134,7 @@ After that the build block specifies the source it is acting on (we only have on
 (After that there is a post processer function that prints the outputs to a file, lists the paths from the volume root for each, and tags the file with the fingerprint from this particular version. This part is not terribly important for our current setup, but can be used later with Terraform to track changed assets. I won't talk more about those 5 lines of code in this article.)
 
 ```hcl file=build.pkr.hcl
+
     sources = [
         "source.amazon-ebs.github-pages",
     ]
@@ -142,11 +153,13 @@ After that the build block specifies the source it is acting on (we only have on
         version_fingerprint = packer.versionFingerprint
         }
     }
+
 ```
 
 When the provisioner shell triggers the scripts listed in setup-deps-gh-pages.sh, the commands are input into the EC2 instance via SSH. The first few blocks establish procedures for handling response to errors, then download and install Docker and Nginx. Docker is not used for this step of the project, I just added it out of habit. Nginx is then set to start automatically on boot.
 
 ```sh file=setup-deps-gh-pages.sh
+
     #!/bin/bash
     set -eu -o pipefail
 
@@ -176,6 +189,7 @@ When the provisioner shell triggers the scripts listed in setup-deps-gh-pages.sh
 The next few blocks download the github repo, change to the main branch, and copy the nginx configuration files into the appropriate directories. The prebuilt html files that were output by jekyll for this site are then copied from the gh-pages branch into the appropriate location for nginx to use them. Finally, nginx is reloaded to enact the changes.
 
 ```sh file=setup-deps-gh-pages.sh
+
     # Get github pages files
     cd ~
     git clone https://github.com/Gabrielc1925/Gabrielc1925.github.io.git
@@ -195,13 +209,15 @@ The next few blocks download the github repo, change to the main branch, and cop
 
     # Reload nginx
     nginx -s reload
+
 ```
 
 At this point Packer is complete and has created a working AMI on my AWS account. It has not saved this AMI to a registry or set up long-term management with Terraform, but the script worked so it is the first step of a CI/CD workflow.
 
 The gh-actions workflow has one more job to run still, so it triggers the function to update the HCP Packer registry with the work we did.
 
-'''yml file=build-deploy-packer-aws.yml
+```yml file=build-deploy-packer-aws.yml
+
 update-hcp-packer-channel:
 name: Update HCP Packer channel
 needs: ["build-artifact"]
@@ -215,14 +231,13 @@ uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
             channel_name=$( echo ${{github.ref_name}} | sed 's/\./-/g')
             ./create_channel_version.sh $HCP_BUCKET_NAME $channel_name "${{ needs.build-artifact.outputs.version_fingerprint }}"
 
-````
+```
 
-
-This triggers the helper script based in "create_channel_version.sh," which records the changes to the Packer registry in the bucket we specified.  This section is not something that I wrote, I just copied it from Hashicorp's example repo and ensured no modifications were needed due to my region or bucket name.
+This triggers the helper script based in "create_channel_version.sh," which records the changes to the Packer registry in the bucket we specified. This section is not something that I wrote, I just copied it from Hashicorp's example repo and ensured no modifications were needed due to my region or bucket name.
 The script uses a bunch of metadata to ensure that the files generated have unique names so they will work with HCP registry
 
-
 ```sh file=create_channel_version.sh
+
     #! /usr/bin/env bash
 
     set -eEuo pipefail
@@ -302,7 +317,8 @@ The script uses a bunch of metadata to ensure that the files generated have uniq
         echo "Error updating channel: $api_error"
         exit 1
     fi
-````
+
+```
 
 After that, the gh-actions workflow is completed and the AMI generated by Packer is terminated.
 

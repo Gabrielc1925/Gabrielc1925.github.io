@@ -30,14 +30,14 @@ git checkout main
 
 # Set up nginx configuration
 cd nginx_setup
-cp  -r -f conf.d /etc/nginx
-cp -f nginx.conf /etc/nginx
+sudo cp  -r -f conf.d /etc/nginx
+sudo cp -f nginx.conf /etc/nginx
 
 # Set up nginx site html pages
-mkdir /var/www/gabrielc1925.github.io
+sudo mkdir /var/www/gabrielc1925.github.io
 cd ~/Gabrielc1925.github.io
 git checkout gh-pages
-cp ~/Gabrielc1925.github.io/{_pages/dropdown,assets,blog,cv,news,projects,repositories,workflow,404.html,feed.xml,index.html,robots.txt,sitemap.xml} /var/www/gabrielc1925.github.io
+sudo cp ~/Gabrielc1925.github.io/{_pages/dropdown,assets,blog,cv,news,projects,repositories,workflow,404.html,feed.xml,index.html,robots.txt,sitemap.xml} /var/www/gabrielc1925.github.io
 
 # Reload nginx
-nginx -s reload
+sudo nginx -s reload
