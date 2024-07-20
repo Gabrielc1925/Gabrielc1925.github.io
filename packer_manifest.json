@@ -1,0 +1,1 @@
+{"builds":[{"name":"github-pages","builder_type":"amazon-ebs","build_time":1721396061,"files":null,"artifact_id":"us-east-1:ami-0283c9f1e04911850","packer_run_uuid":"03d47602-f9c4-4cde-e4c6-7d7d017ade2a","custom_data":{"version_fingerprint":"01J35JXVTQR15RJZMNKM17G1JV"}}],"last_run_uuid":"03d47602-f9c4-4cde-e4c6-7d7d017ade2a"}
