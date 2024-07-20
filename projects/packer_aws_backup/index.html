@@ -11,229 +11,235 @@ push:
   tags: ["v[0-9].[0-9]+.[0-9]+"]
   branches:
     - "gh-pages"
-</code></pre></div></div> <p>The environment variables and where to find them are then defined, and then the jobs block begins. The first job copies the repo with checkout and links it in an environment variable so that it can be accessed by later parts of the gh-actions scripts. It then links the AWS credentials stored in the gh secrets manager to local env variables for this set of functions.</p> <p>```yml file=build-deploy-packer-aws.yml jobs: build-artifact: name: Build runs-on: ubuntu-latest outputs: version_fingerprint: $ steps: - name: Checkout Repository uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  - name: Configure AWS Credentials
-    uses: aws-actions/configure-aws-credentials@8c3f20df09ac63af7b3ae3d7c91f105f857d8497 # v4.0.0
-    with:
-      aws-access-key-id: $
-      aws-secret-access-key: $
-      aws-region: us-east-1 ```
-</code></pre></div></div> <p>The gh-actions script then begins to run Packer. It initializes the plugins required, then either runs a normal packer build command or includes a tag when running packer build to keep track of major deployments. Finally, it records the Packer version fingerprint for use by later scripts and applications.</p> <p>```yml file=build-deploy-packer-aws.yml</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- name: Packer Init
-    run: packer init .
+</code></pre></div></div> <p>The environment variables and where to find them are then defined, and then the jobs block begins. The first job copies the repo with checkout and links it in an environment variable so that it can be accessed by later parts of the gh-actions scripts. It then links the AWS credentials stored in the gh secrets manager to local env variables for this set of functions.</p> <div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build-artifact</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">Build</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">outputs</span><span class="pi">:</span>
+      <span class="na">version_fingerprint</span><span class="pi">:</span> <span class="s">$</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Checkout Repository</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac</span> <span class="c1"># v4.0.0</span>
 
-- name: Packer Build - Branches
-    if: startsWith(github.ref, 'refs/heads/')
-    run: packer build .
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Configure AWS Credentials</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">aws-actions/configure-aws-credentials@8c3f20df09ac63af7b3ae3d7c91f105f857d8497</span> <span class="c1"># v4.0.0</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">aws-access-key-id</span><span class="pi">:</span> <span class="s">$</span>
+          <span class="na">aws-secret-access-key</span><span class="pi">:</span> <span class="s">$</span>
+          <span class="na">aws-region</span><span class="pi">:</span> <span class="s">us-east-1</span>
+</code></pre></div></div> <p>The gh-actions script then begins to run Packer. It initializes the plugins required, then either runs a normal packer build command or includes a tag when running packer build to keep track of major deployments. Finally, it records the Packer version fingerprint for use by later scripts and applications.</p> <div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Packer Init</span>
+        <span class="s">run</span><span class="err">:</span> <span class="s">packer init .</span>
 
-- name: Packer Build - Tags
-    if: startsWith(github.ref, 'refs/tags/v')
-    run: HCP_PACKER_BUILD_FINGERPRINT=$(date +'%m%d%YT%H%M%S') packer build .
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Packer Build - Branches</span>
+        <span class="s">if</span><span class="err">:</span> <span class="s">startsWith(github.ref, 'refs/heads/')</span>
+        <span class="s">run</span><span class="err">:</span> <span class="s">packer build .</span>
 
-- name: Get HCP Packer version fingerprint from Packer Manifest
-    id: hcp
-    run: |
-        last_run_uuid=$(jq -r '.last_run_uuid' "./packer_manifest.json")
-        build=$(jq -r '.builds[] | select(.packer_run_uuid == "'"$last_run_uuid"'")' "./packer_manifest.json")
-        version_fingerprint=$(echo "$build" | jq -r '.custom_data.version_fingerprint')
-        echo "::set-output name=version_fingerprint::$version_fingerprint"
-</code></pre></div></div> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-Packer build begins by reading the build.pkr.hcl file and loading the plugins listed. It then lists the source for the AMI we will be building and provisioning. I went with a lightweight and low cost Ubuntu LTS 22.04 image as I do not need more than that for this project.
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Packer Build - Tags</span>
+        <span class="s">if</span><span class="err">:</span> <span class="s">startsWith(github.ref, 'refs/tags/v')</span>
+        <span class="s">run</span><span class="err">:</span> <span class="s">HCP_PACKER_BUILD_FINGERPRINT=$(date +'%m%d%YT%H%M%S') packer build .</span>
 
-```hcl file=build.pkr.hcl
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Get HCP Packer version fingerprint from Packer Manifest</span>
+        <span class="s">id</span><span class="err">:</span> <span class="s">hcp</span>
+        <span class="s">run</span><span class="err">:</span> <span class="pi">|</span>
+            <span class="s">last_run_uuid=$(jq -r '.last_run_uuid' "./packer_manifest.json")</span>
+            <span class="s">build=$(jq -r '.builds[] | select(.packer_run_uuid == "'"$last_run_uuid"'")' "./packer_manifest.json")</span>
+            <span class="s">version_fingerprint=$(echo "$build" | jq -r '.custom_data.version_fingerprint')</span>
+            <span class="s">echo "::set-output name=version_fingerprint::$version_fingerprint"</span>
 
-    packer {
-    required_plugins {
-        amazon = {
-        source  = "github.com/hashicorp/amazon"
-        version = "~&gt; 1.3.2"
-        }
-    }
-    }
+</code></pre></div></div> <p>Packer build begins by reading the build.pkr.hcl file and loading the plugins listed. It then lists the source for the AMI we will be building and provisioning. I went with a lightweight and low cost Ubuntu LTS 22.04 image as I do not need more than that for this project.</p> <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    <span class="nx">packer</span> <span class="p">{</span>
+    <span class="nx">required_plugins</span> <span class="p">{</span>
+        <span class="nx">amazon</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">source</span>  <span class="o">=</span> <span class="dl">"</span><span class="s2">github.com/hashicorp/amazon</span><span class="dl">"</span>
+        <span class="nx">version</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">~&gt; 1.3.2</span><span class="dl">"</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="p">}</span>
 
-    source "amazon-ebs" "github-pages" {
-    region = "us-east-1"
-    source_ami    = "ami-04a81a99f5ec58529"
-    instance_type  = "t2.micro"
-    ssh_username   = "ubuntu"
-    ami_name    = "Gabrielc1925-github-io_"
-    ami_regions = ["us-east-1"]
-    }
+    <span class="nx">source</span> <span class="dl">"</span><span class="s2">amazon-ebs</span><span class="dl">"</span> <span class="dl">"</span><span class="s2">github-pages</span><span class="dl">"</span> <span class="p">{</span>
+    <span class="nx">region</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">us-east-1</span><span class="dl">"</span>
+    <span class="nx">source_ami</span>    <span class="o">=</span> <span class="dl">"</span><span class="s2">ami-04a81a99f5ec58529</span><span class="dl">"</span>
+    <span class="nx">instance_type</span>  <span class="o">=</span> <span class="dl">"</span><span class="s2">t2.micro</span><span class="dl">"</span>
+    <span class="nx">ssh_username</span>   <span class="o">=</span> <span class="dl">"</span><span class="s2">ubuntu</span><span class="dl">"</span>
+    <span class="nx">ami_name</span>    <span class="o">=</span> <span class="dl">"</span><span class="s2">Gabrielc1925-github-io_</span><span class="dl">"</span>
+    <span class="nx">ami_regions</span> <span class="o">=</span> <span class="p">[</span><span class="dl">"</span><span class="s2">us-east-1</span><span class="dl">"</span><span class="p">]</span>
+    <span class="p">}</span>
 
-</code></pre></div></div> <p>The next step is to begin our build block. The first step is to connect to the HCP packer registry and create a bucket to track our changes and store any completed AMIs in later steps.</p> <p>```hcl file=build.pkr.hcl</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>build {
-# HCP Packer settings
-hcp_packer_registry {
-    bucket_name = "Gabrielc1925-github-io"
-    description = &lt;&lt;EOT
-This is an image for a backup of the github pages site for gabrielc1925
-    EOT
+</code></pre></div></div> <p>The next step is to begin our build block. The first step is to connect to the HCP packer registry and create a bucket to track our changes and store any completed AMIs in later steps.</p> <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    <span class="nx">build</span> <span class="p">{</span>
+    <span class="err">#</span> <span class="nx">HCP</span> <span class="nx">Packer</span> <span class="nx">settings</span>
+    <span class="nx">hcp_packer_registry</span> <span class="p">{</span>
+        <span class="nx">bucket_name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Gabrielc1925-github-io</span><span class="dl">"</span>
+        <span class="nx">description</span> <span class="o">=</span> <span class="o">&lt;&lt;</span><span class="nx">EOT</span>
+    <span class="nx">This</span> <span class="nx">is</span> <span class="nx">an</span> <span class="nx">image</span> <span class="k">for</span> <span class="nx">a</span> <span class="nx">backup</span> <span class="k">of</span> <span class="nx">the</span> <span class="nx">github</span> <span class="nx">pages</span> <span class="nx">site</span> <span class="k">for</span> <span class="nx">gabrielc1925</span>
+        <span class="nx">EOT</span>
 
-    bucket_labels = {
-    "hashicorp-learn" = "learn-packer-github-actions",
-    }
-}
-} ```
-</code></pre></div></div> <p>After that the build block specifies the source it is acting on (we only have one above, so this is it), and begins to provision the base image for us. It then runs a provisioner block when the EC2 instance is running, and inputs the commands from the shell scripts specified by the file named “setup-deps-gh-pages.sh.”</p> <p>(After that there is a post processer function that prints the outputs to a file, lists the paths from the volume root for each, and tags the file with the fingerprint from this particular version. This part is not terribly important for our current setup, but can be used later with Terraform to track changed assets. I won’t talk more about those 5 lines of code in this article.)</p> <p>```hcl file=build.pkr.hcl</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sources = [
-    "source.amazon-ebs.github-pages",
-]
+        <span class="nx">bucket_labels</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">hashicorp-learn</span><span class="dl">"</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">learn-packer-github-actions</span><span class="dl">"</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="p">}</span>
 
-# Set up Nginx with HTML files from github pages
-provisioner "shell" {
-    scripts = [
-    "setup-deps-gh-pages.sh"
-    ]
-}
+</code></pre></div></div> <p>After that the build block specifies the source it is acting on (we only have one above, so this is it), and begins to provision the base image for us. It then runs a provisioner block when the EC2 instance is running, and inputs the commands from the shell scripts specified by the file named “setup-deps-gh-pages.sh.”</p> <p>(After that there is a post processer function that prints the outputs to a file, lists the paths from the volume root for each, and tags the file with the fingerprint from this particular version. This part is not terribly important for our current setup, but can be used later with Terraform to track changed assets. I won’t talk more about those 5 lines of code in this article.)</p> <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    <span class="nx">sources</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="dl">"</span><span class="s2">source.amazon-ebs.github-pages</span><span class="dl">"</span><span class="p">,</span>
+    <span class="p">]</span>
 
-post-processor "manifest" {
-    output     = "packer_manifest.json"
-    strip_path = true
-    custom_data = {
-    version_fingerprint = packer.versionFingerprint
-    }
-}
-</code></pre></div></div> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-When the provisioner shell triggers the scripts listed in setup-deps-gh-pages.sh, the commands are input into the EC2 instance via SSH. The first few blocks establish procedures for handling response to errors, then download and install Docker and Nginx. Docker is not used for this step of the project, I just added it out of habit. Nginx is then set to start automatically on boot.
+    <span class="err">#</span> <span class="nb">Set</span> <span class="nx">up</span> <span class="nx">Nginx</span> <span class="kd">with</span> <span class="nx">HTML</span> <span class="nx">files</span> <span class="k">from</span> <span class="nx">github</span> <span class="nx">pages</span>
+    <span class="nx">provisioner</span> <span class="dl">"</span><span class="s2">shell</span><span class="dl">"</span> <span class="p">{</span>
+        <span class="nx">scripts</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="dl">"</span><span class="s2">setup-deps-gh-pages.sh</span><span class="dl">"</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
 
-```sh file=setup-deps-gh-pages.sh
+    <span class="nx">post</span><span class="o">-</span><span class="nx">processor</span> <span class="dl">"</span><span class="s2">manifest</span><span class="dl">"</span> <span class="p">{</span>
+        <span class="nx">output</span>     <span class="o">=</span> <span class="dl">"</span><span class="s2">packer_manifest.json</span><span class="dl">"</span>
+        <span class="nx">strip_path</span> <span class="o">=</span> <span class="kc">true</span>
+        <span class="nx">custom_data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">version_fingerprint</span> <span class="o">=</span> <span class="nx">packer</span><span class="p">.</span><span class="nx">versionFingerprint</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
 
-    #!/bin/bash
-    set -eu -o pipefail
+</code></pre></div></div> <p>When the provisioner shell triggers the scripts listed in setup-deps-gh-pages.sh, the commands are input into the EC2 instance via SSH. The first few blocks establish procedures for handling response to errors, then download and install Docker and Nginx. Docker is not used for this step of the project, I just added it out of habit. Nginx is then set to start automatically on boot.</p> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    <span class="c">#!/bin/bash</span>
+    <span class="nb">set</span> <span class="nt">-eu</span> <span class="nt">-o</span> pipefail
 
-    # Add Docker's official GPG key:
-    sudo apt-get update
-    sudo apt-get install ca-certificates curl
-    sudo install -m 0755 -d /etc/apt/keyrings
-    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-    sudo chmod a+r /etc/apt/keyrings/docker.asc
+    <span class="c"># Add Docker's official GPG key:</span>
+    <span class="nb">sudo </span>apt-get update
+    <span class="nb">sudo </span>apt-get <span class="nb">install </span>ca-certificates curl
+    <span class="nb">sudo install</span> <span class="nt">-m</span> 0755 <span class="nt">-d</span> /etc/apt/keyrings
+    <span class="nb">sudo </span>curl <span class="nt">-fsSL</span> https://download.docker.com/linux/ubuntu/gpg <span class="nt">-o</span> /etc/apt/keyrings/docker.asc
+    <span class="nb">sudo chmod </span>a+r /etc/apt/keyrings/docker.asc
 
-    # Add the repository to apt-get sources:
-    echo \
-    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-    $(. /etc/os-release &amp;&amp; echo "$VERSION_CODENAME") stable" | \
-    sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
-    sudo apt-get update
+    <span class="c"># Add the repository to apt-get sources:</span>
+    <span class="nb">echo</span> <span class="se">\</span>
+    <span class="s2">"deb [arch=</span><span class="si">$(</span>dpkg <span class="nt">--print-architecture</span><span class="si">)</span><span class="s2"> signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu </span><span class="se">\</span><span class="s2">
+    </span><span class="si">$(</span><span class="nb">.</span> /etc/os-release <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"</span><span class="nv">$VERSION_CODENAME</span><span class="s2">"</span><span class="si">)</span><span class="s2"> stable"</span> | <span class="se">\</span>
+    <span class="nb">sudo tee</span> /etc/apt/sources.list.d/docker.list <span class="o">&gt;</span> /dev/null
+    <span class="nb">sudo </span>apt-get update
 
-    # Install necessary dependencies
-    sudo apt-get update
-    sudo apt-get install -y git-all nginx docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    <span class="c"># Install necessary dependencies</span>
+    <span class="nb">sudo </span>apt-get update
+    <span class="nb">sudo </span>apt-get <span class="nb">install</span> <span class="nt">-y</span> git-all nginx docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-    # Configure Nginx to start on boot using systemd
-    sudo systemctl enable nginx
+    <span class="c"># Configure Nginx to start on boot using systemd</span>
+    <span class="nb">sudo </span>systemctl <span class="nb">enable </span>nginx
 
-</code></pre></div></div> <p>The next few blocks download the github repo, change to the main branch, and copy the nginx configuration files into the appropriate directories. The prebuilt html files that were output by jekyll for this site are then copied from the gh-pages branch into the appropriate location for nginx to use them. Finally, nginx is reloaded to enact the changes.</p> <p>```sh file=setup-deps-gh-pages.sh</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Get github pages files
-cd ~
-git clone https://github.com/Gabrielc1925/Gabrielc1925.github.io.git
-cd Gabrielc1925.github.io
-git checkout main
+</code></pre></div></div> <p>The next few blocks download the github repo, change to the main branch, and copy the nginx configuration files into the appropriate directories. The prebuilt html files that were output by jekyll for this site are then copied from the gh-pages branch into the appropriate location for nginx to use them. Finally, nginx is reloaded to enact the changes.</p> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    <span class="c"># Get github pages files</span>
+    <span class="nb">cd</span> ~
+    git clone https://github.com/Gabrielc1925/Gabrielc1925.github.io.git
+    <span class="nb">cd </span>Gabrielc1925.github.io
+    git checkout main
 
-# Set up nginx configuration
-cd nginx_setup
-cp  -r -f conf.d /etc/nginx
-cp -f nginx.conf /etc/nginx
+    <span class="c"># Set up nginx configuration</span>
+    <span class="nb">cd </span>nginx_setup
+    <span class="nb">cp</span>  <span class="nt">-r</span> <span class="nt">-f</span> conf.d /etc/nginx
+    <span class="nb">cp</span> <span class="nt">-f</span> nginx.conf /etc/nginx
 
-# Set up nginx site html pages
-mkdir /var/www/gabrielc1925.github.io
-cd ~/Gabrielc1925.github.io
-git checkout gh-pages
-cp ~/Gabrielc1925.github.io/{_pages/dropdown,assets,blog,cv,news,projects,repositories,workflow,404.html,feed.xml,index.html,robots.txt,sitemap.xml} /var/www/gabrielc1925.github.io
+    <span class="c"># Set up nginx site html pages</span>
+    <span class="nb">mkdir</span> /var/www/gabrielc1925.github.io
+    <span class="nb">cd</span> ~/Gabrielc1925.github.io
+    git checkout gh-pages
+    <span class="nb">cp</span> ~/Gabrielc1925.github.io/<span class="o">{</span>_pages/dropdown,assets,blog,cv,news,projects,repositories,workflow,404.html,feed.xml,index.html,robots.txt,sitemap.xml<span class="o">}</span> /var/www/gabrielc1925.github.io
 
-# Reload nginx
-nginx -s reload
-</code></pre></div></div> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-At this point Packer is complete and has created a working AMI on my AWS account. It has not saved this AMI to a registry or set up long-term management with Terraform, but the script worked so it is the first step of a CI/CD workflow.
+    <span class="c"># Reload nginx</span>
+    nginx <span class="nt">-s</span> reload
 
-The gh-actions workflow has one more job to run still, so it triggers the function to update the HCP Packer registry with the work we did.
+</code></pre></div></div> <p>At this point Packer is complete and has created a working AMI on my AWS account. It has not saved this AMI to a registry or set up long-term management with Terraform, but the script worked so it is the first step of a CI/CD workflow.</p> <p>The gh-actions workflow has one more job to run still, so it triggers the function to update the HCP Packer registry with the work we did.</p> <div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="na">update-hcp-packer-channel</span><span class="pi">:</span>
+<span class="na">name</span><span class="pi">:</span> <span class="s">Update HCP Packer channel</span>
+<span class="na">needs</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">build-artifact"</span><span class="pi">]</span>
+<span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+<span class="na">steps: - name</span><span class="pi">:</span> <span class="s">Checkout Repository</span>
+<span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac</span> <span class="c1"># v4.0.0</span>
 
-```yml file=build-deploy-packer-aws.yml
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Create and set channel</span>
+            <span class="s">working-directory</span><span class="err">:</span> <span class="s">.github/scripts</span>
+            <span class="s">run</span><span class="err">:</span> <span class="pi">|</span>
+            <span class="s">channel_name=$( echo $ | sed 's/\./-/g')</span>
+            <span class="s">./create_channel_version.sh $HCP_BUCKET_NAME $channel_name "$"</span>
 
-update-hcp-packer-channel:
-name: Update HCP Packer channel
-needs: ["build-artifact"]
-runs-on: ubuntu-latest
-steps: - name: Checkout Repository
-uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
+</code></pre></div></div> <p>This triggers the helper script based in “create_channel_version.sh,” which records the changes to the Packer registry in the bucket we specified. This section is not something that I wrote, I just copied it from Hashicorp’s example repo and ensured no modifications were needed due to my region or bucket name. The script uses a bunch of metadata to ensure that the files generated have unique names so they will work with HCP registry</p> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    <span class="c">#! /usr/bin/env bash</span>
 
-        - name: Create and set channel
-            working-directory: .github/scripts
-            run: |
-            channel_name=$( echo $ | sed 's/\./-/g')
-            ./create_channel_version.sh $HCP_BUCKET_NAME $channel_name "$"
+    <span class="nb">set</span> <span class="nt">-eEuo</span> pipefail
 
-</code></pre></div></div> <p>This triggers the helper script based in “create_channel_version.sh,” which records the changes to the Packer registry in the bucket we specified. This section is not something that I wrote, I just copied it from Hashicorp’s example repo and ensured no modifications were needed due to my region or bucket name. The script uses a bunch of metadata to ensure that the files generated have unique names so they will work with HCP registry</p> <p>```sh file=create_channel_version.sh</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#! /usr/bin/env bash
+    usage<span class="o">()</span> <span class="o">{</span>
+    <span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh">
+    This script is a helper for setting a channel version in HCP Packer
+    Usage:
+    </span><span class="si">$(</span><span class="nb">basename</span> <span class="s2">"</span><span class="nv">$0</span><span class="s2">"</span><span class="si">)</span><span class="sh"> &lt;bucket_slug&gt; &lt;channel_name&gt; &lt;version_fingerprint&gt;
+    ---
+    Requires the following environment variables to be set:
+    - HCP_CLIENT_ID
+    - HCP_CLIENT_SECRET
+    - HCP_ORGANIZATION_ID
+    - HCP_PROJECT_ID
+</span><span class="no">    EOF
+</span>    <span class="nb">exit </span>1
+    <span class="o">}</span>
 
-set -eEuo pipefail
+    <span class="c"># Entry point</span>
+    <span class="nb">test</span> <span class="s2">"$#"</span> <span class="nt">-eq</span> 3 <span class="o">||</span> usage
 
-usage() {
-cat &lt;&lt;EOF
-This script is a helper for setting a channel version in HCP Packer
-Usage:
-$(basename "$0") &lt;bucket_slug&gt; &lt;channel_name&gt; &lt;version_fingerprint&gt;
----
-Requires the following environment variables to be set:
-- HCP_CLIENT_ID
-- HCP_CLIENT_SECRET
-- HCP_ORGANIZATION_ID
-- HCP_PROJECT_ID
-EOF
-exit 1
-}
+    <span class="nv">bucket_slug</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+    <span class="nv">channel_name</span><span class="o">=</span><span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span>
+    <span class="nv">version_fingerprint</span><span class="o">=</span><span class="s2">"</span><span class="nv">$3</span><span class="s2">"</span>
+    <span class="nv">auth_url</span><span class="o">=</span><span class="s2">"</span><span class="k">${</span><span class="nv">HCP_AUTH_URL</span><span class="k">:-</span><span class="nv">https</span>://auth.hashicorp.com<span class="k">}</span><span class="s2">"</span>
+    <span class="nv">api_host</span><span class="o">=</span><span class="s2">"</span><span class="k">${</span><span class="nv">HCP_API_HOST</span><span class="k">:-</span><span class="nv">https</span>://api.cloud.hashicorp.com<span class="k">}</span><span class="s2">"</span>
+    <span class="nv">base_url</span><span class="o">=</span><span class="s2">"</span><span class="nv">$api_host</span><span class="s2">/packer/2023-01-01/organizations/</span><span class="nv">$HCP_ORGANIZATION_ID</span><span class="s2">/projects/</span><span class="nv">$HCP_PROJECT_ID</span><span class="s2">"</span>
 
-# Entry point
-test "$#" -eq 3 || usage
+    <span class="c"># If on main branch, set channel to release</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$channel_name</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"main"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+    </span><span class="nv">channel_name</span><span class="o">=</span><span class="s2">"release"</span>
+    <span class="k">fi
 
-bucket_slug="$1"
-channel_name="$2"
-version_fingerprint="$3"
-auth_url="${HCP_AUTH_URL:-https://auth.hashicorp.com}"
-api_host="${HCP_API_HOST:-https://api.cloud.hashicorp.com}"
-base_url="$api_host/packer/2023-01-01/organizations/$HCP_ORGANIZATION_ID/projects/$HCP_PROJECT_ID"
+    </span><span class="nb">echo</span> <span class="s2">"Attempting to assign version </span><span class="k">${</span><span class="nv">version_fingerprint</span><span class="k">}</span><span class="s2"> in bucket </span><span class="k">${</span><span class="nv">bucket_slug</span><span class="k">}</span><span class="s2"> to channel </span><span class="k">${</span><span class="nv">channel_name</span><span class="k">}</span><span class="s2">"</span>
 
-# If on main branch, set channel to release
-if [ "$channel_name" == "main" ]; then
-channel_name="release"
-fi
+    <span class="c"># Authenticate</span>
+    <span class="nv">response</span><span class="o">=</span><span class="si">$(</span>curl <span class="nt">--request</span> POST <span class="nt">--silent</span> <span class="se">\</span>
+    <span class="nt">--url</span> <span class="s2">"</span><span class="nv">$auth_url</span><span class="s2">/oauth/token"</span> <span class="se">\</span>
+    <span class="nt">--data</span> <span class="nv">grant_type</span><span class="o">=</span>client_credentials <span class="se">\</span>
+    <span class="nt">--data</span> <span class="nv">client_id</span><span class="o">=</span><span class="s2">"</span><span class="nv">$HCP_CLIENT_ID</span><span class="s2">"</span> <span class="se">\</span>
+    <span class="nt">--data</span> <span class="nv">client_secret</span><span class="o">=</span><span class="s2">"</span><span class="nv">$HCP_CLIENT_SECRET</span><span class="s2">"</span> <span class="se">\</span>
+    <span class="nt">--data</span> <span class="nv">audience</span><span class="o">=</span><span class="s2">"https://api.hashicorp.cloud"</span><span class="si">)</span>
+    <span class="nv">api_error</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$response</span><span class="s2">"</span> | jq <span class="nt">-r</span> <span class="s1">'.error'</span><span class="si">)</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$api_error</span><span class="s2">"</span> <span class="o">!=</span> null <span class="o">]</span><span class="p">;</span> <span class="k">then
+    </span><span class="nb">echo</span> <span class="s2">"Failed to get access token: </span><span class="nv">$api_error</span><span class="s2">"</span>
+    <span class="nb">exit </span>1
+    <span class="k">fi
+    </span><span class="nv">bearer</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$response</span><span class="s2">"</span> | jq <span class="nt">-r</span> <span class="s1">'.access_token'</span><span class="si">)</span>
 
-echo "Attempting to assign version ${version_fingerprint} in bucket ${bucket_slug} to channel ${channel_name}"
+    <span class="c"># Get or create channel</span>
+    <span class="nb">echo</span> <span class="s2">"Getting channel </span><span class="k">${</span><span class="nv">channel_name</span><span class="k">}</span><span class="s2">"</span>
+    <span class="nv">response</span><span class="o">=</span><span class="si">$(</span>curl <span class="nt">--request</span> GET <span class="nt">--silent</span> <span class="se">\</span>
+    <span class="nt">--url</span> <span class="s2">"</span><span class="nv">$base_url</span><span class="s2">/buckets/</span><span class="nv">$bucket_slug</span><span class="s2">/channels/</span><span class="nv">$channel_name</span><span class="s2">"</span> <span class="se">\</span>
+    <span class="nt">--header</span> <span class="s2">"authorization: Bearer </span><span class="nv">$bearer</span><span class="s2">"</span><span class="si">)</span>
+    <span class="nv">api_error</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$response</span><span class="s2">"</span> | jq <span class="nt">-r</span> <span class="s1">'.message'</span><span class="si">)</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$api_error</span><span class="s2">"</span> <span class="o">!=</span> null <span class="o">]</span><span class="p">;</span> <span class="k">then
+    </span><span class="nb">echo</span> <span class="s2">"Channel </span><span class="k">${</span><span class="nv">channel_name</span><span class="k">}</span><span class="s2"> like doesn't exist, creating new channel"</span>
+    <span class="c"># Channel likely doesn't exist, create it</span>
+    <span class="nv">api_error</span><span class="o">=</span><span class="si">$(</span>curl <span class="nt">--request</span> POST <span class="nt">--silent</span> <span class="se">\</span>
+        <span class="nt">--url</span> <span class="s2">"</span><span class="nv">$base_url</span><span class="s2">/buckets/</span><span class="nv">$bucket_slug</span><span class="s2">/channels"</span> <span class="se">\</span>
+        <span class="nt">--data-raw</span> <span class="s1">'{"name":"'</span><span class="s2">"</span><span class="nv">$channel_name</span><span class="s2">"</span><span class="s1">'"}'</span> <span class="se">\</span>
+        <span class="nt">--header</span> <span class="s2">"authorization: Bearer </span><span class="nv">$bearer</span><span class="s2">"</span> | jq <span class="nt">-r</span> <span class="s1">'.error'</span><span class="si">)</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$api_error</span><span class="s2">"</span> <span class="o">!=</span> null <span class="o">]</span><span class="p">;</span> <span class="k">then
+        </span><span class="nb">echo</span> <span class="s2">"Error creating channel: </span><span class="nv">$api_error</span><span class="s2">"</span>
+        <span class="nb">exit </span>1
+    <span class="k">fi
+    fi</span>
 
-# Authenticate
-response=$(curl --request POST --silent \
---url "$auth_url/oauth/token" \
---data grant_type=client_credentials \
---data client_id="$HCP_CLIENT_ID" \
---data client_secret="$HCP_CLIENT_SECRET" \
---data audience="https://api.hashicorp.cloud")
-api_error=$(echo "$response" | jq -r '.error')
-if [ "$api_error" != null ]; then
-echo "Failed to get access token: $api_error"
-exit 1
-fi
-bearer=$(echo "$response" | jq -r '.access_token')
+    <span class="c"># Update channel to point to version</span>
+    <span class="nb">echo</span> <span class="s2">"Updating channel </span><span class="k">${</span><span class="nv">channel_name</span><span class="k">}</span><span class="s2"> to version fingerprint </span><span class="k">${</span><span class="nv">version_fingerprint</span><span class="k">}</span><span class="s2">"</span>
+    <span class="nv">api_error</span><span class="o">=</span><span class="si">$(</span>curl <span class="nt">--request</span> PATCH <span class="nt">--silent</span> <span class="se">\</span>
+    <span class="nt">--url</span> <span class="s2">"</span><span class="nv">$base_url</span><span class="s2">/buckets/</span><span class="nv">$bucket_slug</span><span class="s2">/channels/</span><span class="nv">$channel_name</span><span class="s2">"</span> <span class="se">\</span>
+    <span class="nt">--data-raw</span> <span class="s1">'{"version_fingerprint": "'</span><span class="nv">$version_fingerprint</span><span class="s1">'", "update_mask": "versionFingerprint"}'</span> <span class="se">\</span>
+    <span class="nt">--header</span> <span class="s2">"authorization: Bearer </span><span class="nv">$bearer</span><span class="s2">"</span> | jq <span class="nt">-r</span> <span class="s1">'.message'</span><span class="si">)</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$api_error</span><span class="s2">"</span> <span class="o">!=</span> null <span class="o">]</span><span class="p">;</span> <span class="k">then
+        </span><span class="nb">echo</span> <span class="s2">"Error updating channel: </span><span class="nv">$api_error</span><span class="s2">"</span>
+        <span class="nb">exit </span>1
+    <span class="k">fi</span>
 
-# Get or create channel
-echo "Getting channel ${channel_name}"
-response=$(curl --request GET --silent \
---url "$base_url/buckets/$bucket_slug/channels/$channel_name" \
---header "authorization: Bearer $bearer")
-api_error=$(echo "$response" | jq -r '.message')
-if [ "$api_error" != null ]; then
-echo "Channel ${channel_name} like doesn't exist, creating new channel"
-# Channel likely doesn't exist, create it
-api_error=$(curl --request POST --silent \
-    --url "$base_url/buckets/$bucket_slug/channels" \
-    --data-raw '{"name":"'"$channel_name"'"}' \
-    --header "authorization: Bearer $bearer" | jq -r '.error')
-if [ "$api_error" != null ]; then
-    echo "Error creating channel: $api_error"
-    exit 1
-fi
-fi
-
-# Update channel to point to version
-echo "Updating channel ${channel_name} to version fingerprint ${version_fingerprint}"
-api_error=$(curl --request PATCH --silent \
---url "$base_url/buckets/$bucket_slug/channels/$channel_name" \
---data-raw '{"version_fingerprint": "'$version_fingerprint'", "update_mask": "versionFingerprint"}' \
---header "authorization: Bearer $bearer" | jq -r '.message')
-if [ "$api_error" != null ]; then
-    echo "Error updating channel: $api_error"
-    exit 1
-fi
-</code></pre></div></div> <p>```</p> <p>After that, the gh-actions workflow is completed and the AMI generated by Packer is terminated.</p> <p>The next steps are to set up terraform for this site, and to confure a system to fail over to AWS in case of an outage.</p> </article> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2024 Gabriel J. Chavez. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Photos from <a href="https://unsplash.com" target="_blank" rel="external nofollow noopener">Unsplash</a>. <a href="https://www.flaticon.com/free-icons/programmer" title="programmer icons" rel="external nofollow noopener" target="_blank">Programmer icons created by Flat Icons - Flaticon</a> </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?b7816bd189846d29eded8745f9c4cf77"></script> <script defer src="/assets/js/copy_code.js?12775fdf7f95e901d7119054556e495f" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script type="text/javascript">window.MathJax={tex:{tags:"ams"}};</script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.min.js"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script> <script type="text/javascript">function progressBarSetup(){"max"in document.createElement("progress")?(initializeProgressElement(),$(document).on("scroll",function(){progressBar.attr({value:getCurrentScrollPosition()})}),$(window).on("resize",initializeProgressElement)):(resizeProgressBar(),$(document).on("scroll",resizeProgressBar),$(window).on("resize",resizeProgressBar))}function getCurrentScrollPosition(){return $(window).scrollTop()}function initializeProgressElement(){let e=$("#navbar").outerHeight(!0);$("body").css({"padding-top":e}),$("progress-container").css({"padding-top":e}),progressBar.css({top:e}),progressBar.attr({max:getDistanceToScroll(),value:getCurrentScrollPosition()})}function getDistanceToScroll(){return $(document).height()-$(window).height()}function resizeProgressBar(){progressBar.css({width:getWidthPercentage()+"%"})}function getWidthPercentage(){return getCurrentScrollPosition()/getDistanceToScroll()*100}const progressBar=$("#progress");window.onload=function(){setTimeout(progressBarSetup,50)};</script> </body> </html>
+</code></pre></div></div> <p>After that, the gh-actions workflow is completed and the AMI generated by Packer is terminated.</p> <p>The next steps are to set up terraform for this site, and to confure a system to fail over to AWS in case of an outage.</p> </article> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2024 Gabriel J. Chavez. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Photos from <a href="https://unsplash.com" target="_blank" rel="external nofollow noopener">Unsplash</a>. <a href="https://www.flaticon.com/free-icons/programmer" title="programmer icons" rel="external nofollow noopener" target="_blank">Programmer icons created by Flat Icons - Flaticon</a> </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?b7816bd189846d29eded8745f9c4cf77"></script> <script defer src="/assets/js/copy_code.js?12775fdf7f95e901d7119054556e495f" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script type="text/javascript">window.MathJax={tex:{tags:"ams"}};</script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.min.js"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script> <script type="text/javascript">function progressBarSetup(){"max"in document.createElement("progress")?(initializeProgressElement(),$(document).on("scroll",function(){progressBar.attr({value:getCurrentScrollPosition()})}),$(window).on("resize",initializeProgressElement)):(resizeProgressBar(),$(document).on("scroll",resizeProgressBar),$(window).on("resize",resizeProgressBar))}function getCurrentScrollPosition(){return $(window).scrollTop()}function initializeProgressElement(){let e=$("#navbar").outerHeight(!0);$("body").css({"padding-top":e}),$("progress-container").css({"padding-top":e}),progressBar.css({top:e}),progressBar.attr({max:getDistanceToScroll(),value:getCurrentScrollPosition()})}function getDistanceToScroll(){return $(document).height()-$(window).height()}function resizeProgressBar(){progressBar.css({width:getWidthPercentage()+"%"})}function getWidthPercentage(){return getCurrentScrollPosition()/getDistanceToScroll()*100}const progressBar=$("#progress");window.onload=function(){setTimeout(progressBarSetup,50)};</script> </body> </html>
