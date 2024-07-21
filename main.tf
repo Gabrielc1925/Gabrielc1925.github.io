@@ -39,7 +39,7 @@ resource "aws_vpc" "gh_pages_backup_site" {
     }
 }
 
-resource "aws_subnet" "public_subnet" {
+resource "aws_subnet" "gh_pages_public_subnet" {
     vpc_id = aws_vpc.gh_pages_backup_site
     cidr_block = "10.0.0.0/26"
     tags = {
@@ -47,9 +47,20 @@ resource "aws_subnet" "public_subnet" {
     }
 }
 
+resource "aws_network_interface" "gh_pages_network_interface" {
+    subnet_id = aws_subnet.gh_pages_public_subnet
+    tags = {
+        Name = "gh_pages_public_network_interface"
+    }
+}
+
 resource "aws_instance" "gh-pages_backup" {
     ami = data.hcp_packer_artifact.Gabrielc1925-github-io
     instance_type = "t2.micro"
+    network_interface {
+        network_interface_id = aws_network_interface.gh_pages_network_interface
+        device_index = 0
+    }
     tags = {
         Name = "gh_pages_backup_instance"
     }
