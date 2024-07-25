@@ -1,15 +1,15 @@
 terraform {
     cloud {
-        organization = "Gabrielc1925_github_io"
+        organization = "Gabrielc1925-github-io"
         workspaces {
-            name = "Gabrielc1925_github_io"
+            name = "Gabrielc1925-github-io"
         }
     }
     required_providers {
-        # hcp = {
-        #     source = "hashicorp/hcp"
-        #     version = "~>0.94.1"
-        # }
+        hcp = {
+            source = "hashicorp/hcp"
+            version = "~>0.94.1"
+        }
         aws = {
             source  =   "hashicorp/aws"
             version     =   "~>5.0"
@@ -18,18 +18,34 @@ terraform {
     }
 }
 
+# Create local variable and get artifact ID from the base artifact
+data "hcp_packer_version" "ResumeWebsiteBackup_AWS" {
+    bucket_name = "Gabrielc1925-github-io"
+    channel_name    = "latest"
+}
+
+data "hcp_packer_artifact" "Gabrielc1925-github-io" {
+  bucket_name   = "Gabrielc1925-github-io"
+  version_fingerprint = data.hcp_packer_version.ResumeWebsiteBackup_AWS.fingerprint
+  platform      = "aws"
+  region        = "us-east-1"
+}
+
 provider "hcp" {
 #    project_id = "b1bbb80d-e6cd-49c6-b855-bec80721fb28"
 #    credential_file = "/home/gabrielc1925/.terraform.d/credentials.tfrc.json"
 }
 
-# Create local variable and get artifact ID from the base artifact
-data "hcp_packer_artifact" "Gabrielc1925-github-io" {
-  bucket_name   = "Gabrielc1925-github-io"
-  channel_name  = "latest"
-  platform      = "aws"
-  region        = "us-east-1"
+resource "hcp_packer_bucket" "Gabrielc1925-github-io" {
+    name = "Gabrielc1925-githb-io"
 }
+
+resource "hcp_packer_channel" "latest" {
+    name = "latest"
+    bucket_name = "Gabrielc1925-github-io"
+}
+
+
 
 provider "aws" {
     region  =   "us-east-1"
@@ -40,6 +56,9 @@ provider "aws" {
     # The following two are for using with github actions saved credential secrets
 
 }
+# source "amazon-ebs" "packer-secondary" {
+#     source_ami  = data.hcp_packer_artifact.Gabrielc1925-github-io.external_identifier
+# }
 
 resource "aws_vpc" "gh_pages_backup_site" {
     cidr_block = "10.0.0.0/24"
@@ -66,7 +85,7 @@ resource "aws_network_interface" "gh_pages_network_interface" {
 }
 
 resource "aws_instance" "gh-pages_backup" {
-    ami = data.hcp_packer_artifact.Gabrielc1925-github-io.id
+    ami = data.hcp_packer_artifact.Gabrielc1925-github-io.external_identifier
     instance_type = "t2.micro"
     network_interface {
         network_interface_id = aws_network_interface.gh_pages_network_interface.id
