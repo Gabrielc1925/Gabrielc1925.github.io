@@ -32,6 +32,7 @@ data "hcp_packer_artifact" "Gabrielc1925-github-io" {
 }
 
 provider "hcp" {
+
 #    project_id = "b1bbb80d-e6cd-49c6-b855-bec80721fb28"
 #    credential_file = "/home/gabrielc1925/.terraform.d/credentials.tfrc.json"
 }
@@ -61,7 +62,7 @@ provider "aws" {
 # }
 
 resource "aws_vpc" "gh_pages_backup_site" {
-    cidr_block = "10.0.0.0/24"
+    # cidr_block = "10.0.0.0/24"
     enable_dns_support = true
     enable_dns_hostnames = true
     tags = {
@@ -75,6 +76,7 @@ resource "aws_internet_gateway" "gh_pages_ig" {
 
 resource "aws_subnet" "gh_pages_public_subnet" {
     vpc_id = aws_vpc.gh_pages_backup_site.id
+    map_public_ip_on_launch = true
     cidr_block = "10.0.0.0/26"
     tags = {
         Name = "gh_pages_public_vpc"
@@ -83,6 +85,7 @@ resource "aws_subnet" "gh_pages_public_subnet" {
 
 # resource "aws_network_interface" "gh_pages_network_interface" {
 #     subnet_id = aws_subnet.gh_pages_public_subnet.id 
+
 #     tags = {
 #         Name = "gh_pages_public_network_interface"
 #     }
@@ -109,6 +112,24 @@ resource "aws_vpc_security_group_egress_rule" "EC2InstanceConnect" {
     to_port = 22
 }
 
+resource "aws_route_table" "gh_pages_backup" {
+    vpc_id = aws_vpc.gh_pages_backup_site.id
+
+    route {
+        cidr_block = "0.0.0.0/0"
+        gateway_id = aws_internet_gateway.gh_pages_ig.id
+    }
+    route {
+        ipv6_cidr_block = "::/0"
+        gateway_id = aws_internet_gateway.gh_pages_ig.id
+    }
+}
+
+resource "aws_route_table_association" "gh_Pages_route_table" {
+    subnet_id = aws_subnet.gh_pages_public_subnet.id
+    route_table_id = aws_route_table.gh_pages_backup.id
+}
+
 resource "aws_instance" "gh-pages_backup" {
     ami = data.hcp_packer_artifact.Gabrielc1925-github-io.external_identifier
     instance_type = "t2.micro"
@@ -116,8 +137,8 @@ resource "aws_instance" "gh-pages_backup" {
     #     network_interface_id = aws_network_interface.gh_pages_network_interface.id
     #     device_index = 0
     # }
-    associate_public_ip_address = true
-    vpc_security_group_ids = aws_security_group.gh_pages_ssh.id
+    # associate_public_ip_address = true
+    vpc_security_group_ids = [aws_security_group.gh_pages_ssh.id]
     subnet_id = aws_subnet.gh_pages_public_subnet.id
     tags = {
         Name = "gh_pages_backup_instance"
