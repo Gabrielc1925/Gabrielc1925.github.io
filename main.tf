@@ -90,24 +90,10 @@ resource "aws_subnet" "gh_pages_public_subnet" {
 
 resource "aws_security_group" "gh_pages_ssh" {
     name = "gh_pages_ssh"
-    description = "Allow SSH from my IP and access from EC2 instance connect"
+    description = "Allow SSH from EC2 instance connect"
     vpc_id = aws_vpc.gh_pages_backup_site.id
 }
 
-resource "aws_vpc_security_group_ingress_rule" "SSHFromMe" {
-    security_group_id = aws_security_group.gh_pages_ssh.id
-    cidr_ipv4 = "71.56.210.181/32"
-    ip_protocol = "tcp"
-    from_port = 22
-    to_port = 22
-}
-resource "aws_vpc_security_group_egress_rule" "SSHFromMe" {
-    security_group_id = aws_security_group.gh_pages_ssh.id
-    cidr_ipv4 = "71.56.210.181/32"
-    ip_protocol = "tcp"
-    from_port = 22
-    to_port = 22
-}
 resource "aws_vpc_security_group_ingress_rule" "EC2InstanceConnect" {
     security_group_id = aws_security_group.gh_pages_ssh.id
     cidr_ipv4 = "18.206.107.24/29"
@@ -131,7 +117,7 @@ resource "aws_instance" "gh-pages_backup" {
     #     device_index = 0
     # }
     associate_public_ip_address = true
-    # security_groups = aws_security_group.gh_pages_ssh.arn
+    vpc_security_group_ids = aws_security_group.gh_pages_ssh.id
     subnet_id = aws_subnet.gh_pages_public_subnet.id
     tags = {
         Name = "gh_pages_backup_instance"
