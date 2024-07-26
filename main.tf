@@ -69,6 +69,10 @@ resource "aws_vpc" "gh_pages_backup_site" {
     }
 }
 
+resource "aws_internet_gateway" "gh_pages_ig" {
+    vpc_id = aws_vpc.gh_pages_backup_site.id
+}
+
 resource "aws_subnet" "gh_pages_public_subnet" {
     vpc_id = aws_vpc.gh_pages_backup_site.id
     cidr_block = "10.0.0.0/26"
@@ -77,21 +81,64 @@ resource "aws_subnet" "gh_pages_public_subnet" {
     }
 }
 
-resource "aws_network_interface" "gh_pages_network_interface" {
-    subnet_id = aws_subnet.gh_pages_public_subnet.id
-    tags = {
-        Name = "gh_pages_public_network_interface"
-    }
+# resource "aws_network_interface" "gh_pages_network_interface" {
+#     subnet_id = aws_subnet.gh_pages_public_subnet.id 
+#     tags = {
+#         Name = "gh_pages_public_network_interface"
+#     }
+# }
+
+resource "aws_security_group" "gh_pages_ssh" {
+    name = "gh_pages_ssh"
+    description = "Allow SSH from my IP and access from EC2 instance connect"
+    vpc_id = aws_vpc.gh_pages_backup_site.id
+}
+
+resource "aws_vpc_security_group_ingress_rule" "SSHFromMe" {
+    security_group_id = aws_security_group.gh_pages_ssh.id
+    cidr_ipv4 = "71.56.210.181/32"
+    ip_protocol = "tcp"
+    from_port = 22
+    to_port = 22
+}
+resource "aws_vpc_security_group_egress_rule" "SSHFromMe" {
+    security_group_id = aws_security_group.gh_pages_ssh.id
+    cidr_ipv4 = "71.56.210.181/32"
+    ip_protocol = "tcp"
+    from_port = 22
+    to_port = 22
+}
+resource "aws_vpc_security_group_ingress_rule" "EC2InstanceConnect" {
+    security_group_id = aws_security_group.gh_pages_ssh.id
+    cidr_ipv4 = "18.206.107.24/29"
+    ip_protocol = "tcp"
+    from_port = 22
+    to_port = 22
+}
+resource "aws_vpc_security_group_egress_rule" "EC2InstanceConnect" {
+    security_group_id = aws_security_group.gh_pages_ssh.id
+    cidr_ipv4 = "18.206.107.24/29"
+    ip_protocol = "tcp"
+    from_port = 22
+    to_port = 22
 }
 
 resource "aws_instance" "gh-pages_backup" {
     ami = data.hcp_packer_artifact.Gabrielc1925-github-io.external_identifier
     instance_type = "t2.micro"
-    network_interface {
-        network_interface_id = aws_network_interface.gh_pages_network_interface.id
-        device_index = 0
-    }
+    # network_interface {
+    #     network_interface_id = aws_network_interface.gh_pages_network_interface.id
+    #     device_index = 0
+    # }
+    associate_public_ip_address = true
+    # security_groups = aws_security_group.gh_pages_ssh.arn
+    subnet_id = aws_subnet.gh_pages_public_subnet.id
     tags = {
         Name = "gh_pages_backup_instance"
     }
 }
+
+
+#TODO - Add public IPv4 address to EC2 Instance - #DONE
+#TODO - Add Security group settings for SSH from EC2 and my IP #DONE
+#TODO - Add internet gateway to gh_pages_publiv_vpc subnet #DONE
