@@ -14,15 +14,17 @@ This first step in the process is to use Packer to create an Amazon Machine Imag
 
 The files for this project can be found in the Github repo for this website: [github.com/gabrielc1925/gabrielc1925.github.io](https://github.com/Gabrielc1925/Gabrielc1925.github.io).
 
-``The files use in this basic Packer deployment are:
-`
+The files use in this basic Packer deployment are:
+
+```
+
 "/build.pkr.hcl",
 "/setup-deps-gh-pages.sh",
 "/.github/workflows/build-deploy-packer-aws.yml",
 and
 "/.github/scripts/create_channel_version.sh"
 
-````
+```
 
 This workflow is triggered by the "build-deploy-packer-aws.yml" file.
 
@@ -36,7 +38,7 @@ push:
   tags: ["v[0-9].[0-9]+.[0-9]+"]
   branches:
     - "gh-pages"
-````
+```
 
 The environment variables and where to find them are then defined, and then the jobs block begins.
 The first job copies the repo with checkout and links it in an environment variable so that it can be accessed by later parts of the gh-actions scripts. It then links the AWS credentials stored in the gh secrets manager to local env variables for this set of functions.
