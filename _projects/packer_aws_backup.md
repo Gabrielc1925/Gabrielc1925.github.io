@@ -16,21 +16,19 @@ The files for this project can be found in the Github repo for this website: [gi
 
 The files use in this basic Packer deployment are:
 
-```
-
+```md
 "/build.pkr.hcl",
 "/setup-deps-gh-pages.sh",
 "/.github/workflows/build-deploy-packer-aws.yml",
 and
 "/.github/scripts/create_channel_version.sh"
-
 ```
 
 This workflow is triggered by the "build-deploy-packer-aws.yml" file.
 
 The first block establishes the timing for when to run this github action. I set it to only run when a change was pushed to the gh-pages branch, as that is the final step after all other checks when a pull request is completed. I don't want to update my AMI unnecessarily, so I put this github action to run after all other actions are done.
 
-```yml file=build-deploy-packer-aws.yml
+```yml
 name: Deploy to Packer and AWS
 
 on:
