@@ -89,7 +89,7 @@ data "aws_security_group" "public" {
 #     enable_dns_support = true
 #     enable_dns_hostnames = true
 #     tags = {
-#         Name = "main"
+#         Name = "tf_gh_pages_vpc"
 #     }
 # }
 
@@ -102,7 +102,7 @@ data "aws_security_group" "public" {
 #     map_public_ip_on_launch = true
 #     cidr_block = "10.0.0.0/26"
 #     tags = {
-#         Name = "gh_pages_public_vpc"
+#         Name = "tf_gh_pages_public_subnet"
 #     }
 # }
 
@@ -110,12 +110,12 @@ data "aws_security_group" "public" {
 #     subnet_id = aws_subnet.gh_pages_public_subnet.id 
 
 #     tags = {
-#         Name = "gh_pages_public_network_interface"
+#         Name = "tf_gh_pages_eni"
 #     }
 # }
 
 # resource "aws_security_group" "gh_pages_ssh" {
-#     name = "gh_pages_ssh"
+#     name = "tf_gh_pages_ssh"
 #     description = "Allow SSH from EC2 instance connect"
 #     vpc_id = aws_vpc.gh_pages_backup_site.id
 # }
