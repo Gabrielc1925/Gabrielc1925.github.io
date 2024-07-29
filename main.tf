@@ -18,6 +18,26 @@ terraform {
     }
 }
 
+
+# My terminal does not have a browser linked to xdg-open, so I cannot use the normal method of authenticating to hcp.
+# So far I have been hard coding arguments for client_id and client_secret (and then removing them before writing a commit)
+
+provider "hcp" {
+    # client_id = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    # client_secret = "xxxxxxxxxxxxxxxxxxXXX"
+#    project_id = "b1bbb80d-e6cd-49c6-b855-bec80721fb28"
+#    credential_file = "/home/gabrielc1925/.terraform.d/credentials.tfrc.json"
+}
+
+resource "hcp_packer_bucket" "Gabrielc1925-github-io" {
+    name = "Gabrielc1925-githb-io"
+}
+
+resource "hcp_packer_channel" "latest" {
+    name = "latest"
+    bucket_name = "Gabrielc1925-github-io"
+}
+
 # Create local variable and get artifact ID from the base artifact
 data "hcp_packer_version" "ResumeWebsiteBackup_AWS" {
     bucket_name = "Gabrielc1925-github-io"
@@ -32,40 +52,16 @@ data "hcp_packer_artifact" "Gabrielc1925-github-io" {
 }
 
 
-
-# My terminal does not have a browser linked to xdg-open, so I cannot use the normal method of authenticating to hcp.
-# So far I have been hard coding arguments for client_id and client_secret (and then removing them before writing a commit)
-
-provider "hcp" {
-
-#    project_id = "b1bbb80d-e6cd-49c6-b855-bec80721fb28"
-#    credential_file = "/home/gabrielc1925/.terraform.d/credentials.tfrc.json"
-}
-
-resource "hcp_packer_bucket" "Gabrielc1925-github-io" {
-    name = "Gabrielc1925-githb-io"
-}
-
-resource "hcp_packer_channel" "latest" {
-    name = "latest"
-    bucket_name = "Gabrielc1925-github-io"
-}
-
-
-
 provider "aws" {
     region  =   "us-east-1"
-    # profile = "PowerUserAccess-978076141947"
+    # profile = "default"
     # # The following two are used for local testing
     # shared_config_files = ["/home/gabrielc1925/.aws/config"]
     # shared_credentials_files = ["/home/gabrielc1925/.aws/credentials"]
     # The following two are for using with github actions saved credential secrets
-
+    # access_key = AWS ACCESS_KEY_ID
+    # secret_key = AWS_SECRET_ACCESS_KEY
 }
-# source "amazon-ebs" "packer-secondary" {
-#     source_ami  = data.hcp_packer_artifact.Gabrielc1925-github-io.external_identifier
-# }
-
 
 # This is an attempt to use prebuilt resources to fix configuration problems an allow for continuing configuration of automatic failover.
 data "aws_subnet" "public" {
