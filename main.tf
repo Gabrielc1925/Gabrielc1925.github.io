@@ -1,4 +1,13 @@
 terraform {
+    backend "remnote" {
+        remote {
+            hostname = "app.terraform.io"
+            organization = "Gabrielc1925-github-io"
+            workspaces {
+                name = "Gabrielc1925-github-io"
+            }
+        }
+    }
     cloud {
         organization = "Gabrielc1925-github-io"
         workspaces {
