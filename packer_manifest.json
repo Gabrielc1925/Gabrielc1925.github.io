@@ -10,7 +10,18 @@
       "custom_data": {
         "version_fingerprint": "01J35JXVTQR15RJZMNKM17G1JV"
       }
+    },
+    {
+      "name": "github-pages",
+      "builder_type": "amazon-ebs",
+      "build_time": 1722430510,
+      "files": null,
+      "artifact_id": "us-east-1:ami-00f9c75cdf0096f11",
+      "packer_run_uuid": "73ebb47e-6a47-84d8-e86b-54ceceb385f1",
+      "custom_data": {
+        "version_fingerprint": "01J44DBNCZA1RCZE6PHNXM0A3A"
+      }
     }
   ],
-  "last_run_uuid": "03d47602-f9c4-4cde-e4c6-7d7d017ade2a"
+  "last_run_uuid": "73ebb47e-6a47-84d8-e86b-54ceceb385f1"
 }
