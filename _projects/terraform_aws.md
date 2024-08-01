@@ -75,7 +75,7 @@ data "hcp_packer_artifact" "Gabrielc1925-github-io" {
 This information was found in my HCP Packer registry.
 
 {% include figure.liquid loading="eager" path="assets/img/Packer_ami.png" title="HCP Packer Registry" class="img-fluid rounded z-depth-1" %}
-Organizaiton name removed for security.
+Organization name removed for security.
 
 Now that terraform knows where to find the ami created by Packer, it is time to begin configuring aws to prepare it to accept connections from terraform. Again, I had extended problems figuring out how to configure authentication to AWS that would play nicely with the rest of my terraform plan. The commented out code here is reflective of that.  
 I ended up realizing that the best way to solve this was to provide environment variables to hcp in the Terraform HCP online portal. These environment variables allowed me to not have to hard code them into my terraform file or store environment variables locally. They are not referenced here, as hcp obtains them automatically when the terraform file is applied.
