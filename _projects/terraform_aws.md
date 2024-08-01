@@ -10,7 +10,7 @@ related_publications: false
 
 The next thing to do is to use Terraform to create resources in AWS from my Packer image. Terraform can use separate files to host data and variables, but I decided to keep it all in one file since this is a small project and that will help to simplify things.
 
-I begun by maing a main.tf file to hold my Terraform configuration. The first block defines the provider plugins that are needed. For this project, I will be using the cloud platform for HCP, as that is where I stored my Packer files. I also will be using AWS, since that is where I will be deploying the image to.
+I begun by maing a [main.tf](https://github.com/Gabrielc1925/Gabrielc1925.github.io/blob/main/main.tf) file to hold my Terraform configuration. The first block defines the provider plugins that are needed. For this project, I will be using the cloud platform for HCP, as that is where I stored my Packer files. I also will be using AWS, since that is where I will be deploying the image to.
 
 ```tf
 terraform {
@@ -41,8 +41,6 @@ The next block defines the hcp provider, and is where I configure it. My termina
 provider "hcp" {
 #    client_id = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 #    client_secret = "xxxxxxxxxxxxxxxxxxXXX"
-#    project_id = "b1bbb80d-e6cd-49c6-b855-bec80721fb28"
-#    credential_file = "/home/gabrielc1925/.terraform.d/credentials.tfrc.json"
 }
 ```
 
@@ -92,3 +90,201 @@ provider "aws" {
     # secret_key = AWS_SECRET_ACCESS_KEY
 }
 ```
+
+Next is where my VPC setup section would go. However, I was having a problem where I could not access my website from the IP address provided by the EC2 instance. I tried everything, but could not figure out the problem.  
+In an attempt to remove confounding factors to isolate the problem, I commented out all of my VPC-provisioning blocks, and instead made a VPC using the AWS console and linked it to my terraform code. This way, I knew that the VPC was set up correctly and the problem was not with my terraform code.
+
+```tf
+# This is an attempt to use prebuilt resources to fix configuration problems and allow for continuing configuration of automatic failover.
+data "aws_subnet" "public" {
+    id = "subnet-0716f207e424b5e72"
+}
+
+data "aws_security_group" "public" {
+    id = "sg-091c66d85701d3e0c"
+}
+
+```
+
+After provisioning resources with this, I still could not access the served webpage, so I assumed the problem was somewhere within the instance.
+Finally, I realized that I had forgot to allow the nginx server to listen on ipv4. So my ipv4 address that I was trying to connect to was not being recognized internally by the nginx server.
+
+One line of code later, I was able to access my webpage. I fixed the offending code in the source file, and was able to move on to checking if my teraform code could provision a VPC.
+
+First, I started with basic provisioning of a VPC and the various resources within a VPC including an internet gateway, a network interface, and a subnet.
+
+```tf
+#VPC
+resource "aws_vpc" "gh_pages_backup_site" {
+  cidr_block           = "10.0.0.0/24"
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+  tags = {
+    Name = "tf_gh_pages_vpc"
+  }
+}
+
+resource "aws_internet_gateway" "gh_pages_ig" {
+  vpc_id = aws_vpc.gh_pages_backup_site.id
+}
+
+resource "aws_network_interface" "gh_pages_network_interface" {
+  subnet_id = aws_subnet.gh_pages_public_subnet.id
+
+  tags = {
+    Name = "tf_gh_pages_eni"
+  }
+}
+
+resource "aws_subnet" "gh_pages_public_subnet" {
+  vpc_id                  = aws_vpc.gh_pages_backup_site.id
+  map_public_ip_on_launch = true
+  cidr_block              = "10.0.0.0/26"
+  tags = {
+    Name = "tf_gh_pages_public_subnet"
+  }
+}
+
+```
+
+Next, I created a route table and route table association to ensure all traffic into or out of the subnet was directed to the internet gateway.
+
+```tf
+
+#ROUTE TABLE
+resource "aws_route_table" "gh_pages_backup" {
+  vpc_id = aws_vpc.gh_pages_backup_site.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.gh_pages_ig.id
+  }
+  # route {
+  #     ipv6_cidr_block = "::/0"
+  #     gateway_id = aws_internet_gateway.gh_pages_ig.id
+  # }
+}
+
+resource "aws_route_table_association" "gh_Pages_route_table" {
+  subnet_id      = aws_subnet.gh_pages_public_subnet.id
+  route_table_id = aws_route_table.gh_pages_backup.id
+}
+
+```
+
+Next I provisioned a security group. I left way more open than I would in a real production setting, as I was just learning how to write terraform code for different ports, and my focus is currently on just having a functional example product to learn from in future steps.
+
+```tf
+
+#SECURITY GROUP
+resource "aws_security_group" "gh_pages_ssh" {
+  name        = "tf_gh_pages_ssh"
+  description = "Allow SSH from EC2 instance connect"
+  vpc_id      = aws_vpc.gh_pages_backup_site.id
+}
+
+resource "aws_vpc_security_group_ingress_rule" "EC2InstanceConnect" {
+  security_group_id = aws_security_group.gh_pages_ssh.id
+  cidr_ipv4         = "18.206.107.24/29"
+  ip_protocol       = "tcp"
+  from_port         = 22
+  to_port           = 22
+  description = "EC2 Instance Connect"
+}
+resource "aws_vpc_security_group_egress_rule" "EC2InstanceConnect" {
+  security_group_id = aws_security_group.gh_pages_ssh.id
+  cidr_ipv4         = "18.206.107.24/29"
+  ip_protocol       = "tcp"
+  from_port         = 22
+  to_port           = 22
+  description = "EC2 Instance Connect"
+}
+
+resource "aws_vpc_security_group_ingress_rule" "http" {
+  security_group_id = aws_security_group.gh_pages_ssh.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "tcp"
+  from_port         = 80
+  to_port           = 80
+}
+resource "aws_vpc_security_group_egress_rule" "http" {
+  security_group_id = aws_security_group.gh_pages_ssh.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "tcp"
+  from_port         = 80
+  to_port           = 80
+}
+
+resource "aws_vpc_security_group_ingress_rule" "HttpIpv6" {
+  security_group_id = aws_security_group.gh_pages_ssh.id
+  ip_protocol       = "tcp"
+  from_port         = 80
+  to_port           = 80
+  cidr_ipv6         = "::/0"
+}
+
+resource "aws_vpc_security_group_egress_rule" "HttpIpv6" {
+  security_group_id = aws_security_group.gh_pages_ssh.id
+  ip_protocol       = "tcp"
+  from_port         = 80
+  to_port           = 80
+  cidr_ipv6         = "::/0"
+}
+
+resource "aws_vpc_security_group_ingress_rule" "https" {
+  security_group_id = aws_security_group.gh_pages_ssh.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "tcp"
+  from_port         = 443
+  to_port           = 443
+}
+resource "aws_vpc_security_group_egress_rule" "https" {
+  security_group_id = aws_security_group.gh_pages_ssh.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "tcp"
+  from_port         = 443
+  to_port           = 443
+}
+resource "aws_vpc_security_group_ingress_rule" "HttpsIpv6" {
+  security_group_id = aws_security_group.gh_pages_ssh.id
+  ip_protocol       = "tcp"
+  from_port         = 443
+  to_port           = 443
+  cidr_ipv6         = "::/0"
+}
+resource "aws_vpc_security_group_egress_rule" "HttpsIpv6" {
+  security_group_id = aws_security_group.gh_pages_ssh.id
+  ip_protocol       = "tcp"
+  from_port         = 443
+  to_port           = 443
+  cidr_ipv6         = "::/0"
+}
+
+```
+
+The last block of code is just to provision the EC2 instance. It uses the ami linked above that was created by Packer, and is associated with the subnet and security groups I created above.
+
+```tf
+
+#EC2 INSTANCE
+resource "aws_instance" "gh-pages_backup" {
+  ami           = data.hcp_packer_artifact.Gabrielc1925-github-io.external_identifier
+  instance_type = "t2.micro"
+  associate_public_ip_address = true
+  subnet_id                   = aws_subnet.gh_pages_public_subnet.id
+  vpc_security_group_ids      = [aws_security_group.gh_pages_ssh.id]
+  # The two lines below this comment are for use with the data sources above to utilize prebuilt AWS VPC resources.
+  # subnet_id = data.aws_subnet.public.id
+  # security_groups = [data.aws_security_group.public.id]
+  tags = {
+    Name = "gh_pages_backup_instance"
+  }
+}
+
+```
+
+After a quick `terraform apply` my resources are provisioned and I have a working website hosted on in a EC2 instance via nginx. This basic, very low effort website is only available via http, as I did not take the time to set up a certificate to enable https.
+
+Next would be an attempt to set up Route53 services in AWS to provide https certificates and automatic redirect for https to http. I could also look into setting up automatic failover scenarios in case the original page on github is not available at some point.
+
+At this point, I intend to instead take a deeper look at Github Actions and to see what I can accomplish with them.
