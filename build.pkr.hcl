@@ -24,8 +24,8 @@ build {
 This is an image for a backup of the github pages site for gabrielc1925
     EOT
 
-    bucket_labels = {
-      "hashicorp-learn" = "learn-packer-github-actions",
+  bucket_labels = {
+      "GitHub-Pages" = "learn-packer-github-actions",
     }
   }
 
@@ -33,12 +33,17 @@ This is an image for a backup of the github pages site for gabrielc1925
     "source.amazon-ebs.github-pages",
   ]
 
-  # Set up Nginx with HTML files from github pages
-  provisioner "shell" {
-    scripts = [
-      "setup-deps-gh-pages.sh"
-    ]
-  }
+# Set up Nginx with HTML files from Github Pages using Ansible
+provisioner "ansible" {
+  playbook_file = "./ansible/playbook.yml"
+}"
+
+  # # Set up Nginx with HTML files from github pages
+  # provisioner "shell" {
+  #   scripts = [
+  #     "setup-deps-gh-pages.sh"
+  #   ]
+  # }
 
   post-processor "manifest" {
     output     = "packer_manifest.json"
