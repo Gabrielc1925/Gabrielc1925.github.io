@@ -36,7 +36,7 @@ This is an image for a backup of the github pages site for gabrielc1925
 # Set up Nginx with HTML files from Github Pages using Ansible
 provisioner "ansible" {
   playbook_file = "./ansible/playbook.yml"
-}"
+}
 
   # # Set up Nginx with HTML files from github pages
   # provisioner "shell" {
