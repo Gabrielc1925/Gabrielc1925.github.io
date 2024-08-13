@@ -94,7 +94,7 @@
     - name: synchronize html files from gh-pages to var so it can be served by nginx
       copy:
         src: /etc/tmp/github/gh-pages
-        dest: /var/www/gabrielc1925.github.io
+        dest: /var/www
         remote_src: true
 
     - name: Check nginx configuration syntax
