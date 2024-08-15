@@ -2,7 +2,7 @@
 layout: page
 title: Shell Provisioner
 description: Shell Provisioning for packer
-img: assets/img/brackets.png
+img: assets/img/brackets.pngs
 importance: 3
 category: work
 related_publications: false
