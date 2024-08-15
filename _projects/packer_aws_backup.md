@@ -24,7 +24,7 @@ and
 "/.github/scripts/create_channel_version.sh"
 ```
 
-\page break
+---
 
 This workflow is triggered by the "build-deploy-packer-aws.yml" file.
 
@@ -88,7 +88,7 @@ Finally, it records the Packer version fingerprint for use by later scripts and 
 
 ```
 
-\page break
+---
 
 Packer build begins by reading the build.pkr.hcl file and loading the plugins listed. It then lists the source for the AMI we will be building and provisioning. I went with a lightweight and low cost Ubuntu LTS 22.04 image as I do not need more than that for this project.
 
@@ -152,7 +152,7 @@ provisioner "ansible" {
   # }
 ```
 
-\pagebreak
+---
 
 I previously used a shell script to provision the resources on the AMI, but have since switched it to use Ansible as a provisioner. Ansible is more relevant to real world applications, but I will include the shell scripting walkthrough on a separate page titled 'shell script' since I already wrote about it previously and as an example of past work.
 
@@ -310,7 +310,7 @@ version_fingerprint = packer.versionFingerprint
 }
 ```
 
-\pagebreak
+---
 
 The gh-actions workflow has one more job to run still, so it triggers the function to update the HCP Packer registry with the work we did, including the fingerprint that was saved in the last step.
 
