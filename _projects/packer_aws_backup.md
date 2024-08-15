@@ -18,11 +18,13 @@ The files use in this basic Packer deployment are:
 
 ```md
 "/build.pkr.hcl",
-"/setup-deps-gh-pages.sh",
+"/ansible/playbook.yml",
 "/.github/workflows/build-deploy-packer-aws.yml",
 and
 "/.github/scripts/create_channel_version.sh"
 ```
+
+\page break
 
 This workflow is triggered by the "build-deploy-packer-aws.yml" file.
 
@@ -86,11 +88,13 @@ Finally, it records the Packer version fingerprint for use by later scripts and 
 
 ```
 
+\page break
+
 Packer build begins by reading the build.pkr.hcl file and loading the plugins listed. It then lists the source for the AMI we will be building and provisioning. I went with a lightweight and low cost Ubuntu LTS 22.04 image as I do not need more than that for this project.
 
-<!--- hcl is not a supported language, so I am using js for syntax highlighting --->
+<!--- hcl is not a supported language, so I am using r for syntax highlighting --->
 
-```js
+```r
 
     packer {
     required_plugins {
@@ -114,7 +118,7 @@ Packer build begins by reading the build.pkr.hcl file and loading the plugins li
 
 The next step is to begin our build block. The first step is to connect to the HCP packer registry and create a bucket to track our changes and store any completed AMIs in later steps.
 
-```js
+```r
 
     build {
     # HCP Packer settings
@@ -132,38 +136,25 @@ The next step is to begin our build block. The first step is to connect to the H
 
 ```
 
-After that the build block specifies the source it is acting on (we only have one above, so this is it), and begins to provision the base image for us. It then runs a provisioner block when the EC2 instance is running, and inputs the commands from the shell scripts specified by the file named "setup-deps-gh-pages.sh."
+After that the build block specifies the source it is acting on (we only have one above, so this is it), and begins to provision the base image for us. It then runs a provisioner block when the EC2 instance is running, and inputs the commands from the source file. In this case it is the ansible playbook named playbook.yml
 
-(After that there is a post processer function that prints the outputs to a file, lists the paths from the volume root for each, and tags the file with the fingerprint from this particular version. This part is not terribly important for our current setup, but can be used later with Terraform to track changed assets. I won't talk more about those 5 lines of code in this article.)
+```r
+# Set up Nginx with HTML files from Github Pages using Ansible
+provisioner "ansible" {
+  playbook_file = "./ansible/playbook.yml"
+}
 
-```js
-
-    sources = [
-        "source.amazon-ebs.github-pages",
-    ]
-
-    # Set up Nginx with HTML files from github pages
-    provisioner "shell" {
-        scripts = [
-        "setup-deps-gh-pages.sh"
-        ]
-    }
-
-    post-processor "manifest" {
-        output     = "packer_manifest.json"
-        strip_path = true
-        custom_data = {
-        version_fingerprint = packer.versionFingerprint
-        }
-    }
-
+  # # Set up Nginx with HTML files from github pages
+  # provisioner "shell" {
+  #   scripts = [
+  #     "setup-deps-gh-pages.sh"
+  #   ]
+  # }
 ```
 
-I previously used a shell script to provision the resources on the AMI, but have since switched it to use Ansible as a provisioner. This is more relevant to real world applications, but I will include the shell scripting walkthrough below since I already wrote about it previously and as an example of past work.
+\pagebreak
 
-{% tabs Provisioning %}
-
-{% tab Provisioning ANSIBLE %}
+I previously used a shell script to provision the resources on the AMI, but have since switched it to use Ansible as a provisioner. Ansible is more relevant to real world applications, but I will include the shell scripting walkthrough on a separate page titled 'shell script' since I already wrote about it previously and as an example of past work.
 
 When the provisioner script triggers, Ansible takes the playbook file listed and starts to run commands. Ansible has to be installed on the controller computer for this to work, as the ansible plugin references the host file.
 
@@ -270,114 +261,58 @@ Next, I copy over the HTML files that have alreay been created by Jekyll. These 
 ```yaml
 - name: Clone html files from github repo to temporary folder
   git:
-  repo: "https://github.com/Gabrielc1925/Gabrielc1925.github.io.git"
-  dest: /etc/tmp/github/gh-pages
-  version: gh-pages
-  update: yes
+    repo: "https://github.com/Gabrielc1925/Gabrielc1925.github.io.git"
+    dest: /etc/tmp/github/gh-pages
+    version: gh-pages
+    update: yes
 
-- name: copy html files from gh-pages to var so it can be served by nginx
+- name: synchronize html files from gh-pages to var so it can be served by nginx
   copy:
-  src: /etc/tmp/github/gh-pages
-  dest: /var/www
-  remote_src: true
+    src: /etc/tmp/github/gh-pages
+    dest: /var/www
+    remote_src: true
 ```
 
-Finally, I test my nginx configuration and then restart the nginx service and enable it so it will start automatically after booting the system.
+Finally, there is a set of commands to test nginx configuration and enable nginx when the system boots.
 
 ```yaml
+- name: Check nginx configuration syntax
+  command: nginx -t
+  register: nginx_test
+  ignore_errors: true
 
-     - name: Check nginx configuration syntax
-      command: nginx -t
-      register: nginx_test
-      ignore_errors: true
+- name: Display nginx syntax check output if it failed
+  debug:
+    var: nginx_test.stderr_lines
+  when: nginx_test.rc != 0
 
-    - name: Display nginx syntax check output if it failed
-      debug:
-        var: nginx_test.stderr_lines
-      when: nginx_test.rc != 0
+- name: Fail the playbook if nginx config is invalid
+  fail:
+    msg: "Nginx configuration is invalid. Please fix the errors and try again."
+  when: nginx_test.rc != 0
 
-    - name: Fail the playbook if nginx config is invalid
-      fail:
-        msg: "Nginx configuration is invalid. Please fix the errors and try again."
-      when: nginx_test.rc != 0
-
-    - name: Restart nginx and enable on boot
-      service:
-        name: nginx
-        enabled: true
-        state: restarted
-
+- name: Restart nginx and enable on boot
+  service:
+    name: nginx
+    enabled: true
+    state: restarted
 ```
 
-At this point, the provisioning script is complete. Packer creates an output file and registers the AMI with AWS while listing a reference to it on Hashicorp Cloud's HCP Packer registry.
+At this point Packer is complete and has created a working AMI on my AWS account. It then saves this AMI to the AWS registry, and saves the information needed to locate it later to the local file for upload to the Haschicorp cloud via HCP Packer.
 
-{% endtab %}
-
-{% tab Provisioning SHELL %}
-
-When the provisioner shell triggers the scripts listed in setup-deps-gh-pages.sh, the commands are input into the EC2 instance via SSH. The first few blocks establish procedures for handling response to errors, then download and install Docker and Nginx. Docker is not used for this step of the project, I just added it out of habit. Nginx is then set to start automatically on boot.
-
-```sh
-
-    #!/bin/bash
-    set -eu -o pipefail
-
-    # Add Docker's official GPG key:
-    sudo apt-get update
-    sudo apt-get install ca-certificates curl
-    sudo install -m 0755 -d /etc/apt/keyrings
-    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-    sudo chmod a+r /etc/apt/keyrings/docker.asc
-
-    # Add the repository to apt-get sources:
-    echo \
-    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-    sudo apt-get update
-
-    # Install necessary dependencies
-    sudo apt-get update
-    sudo apt-get install -y git-all nginx docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-    # Configure Nginx to start on boot using systemd
-    sudo systemctl enable nginx
-
+```yaml
+post-processor "manifest" {
+output     = "packer_manifest.json"
+strip_path = true
+custom_data = {
+version_fingerprint = packer.versionFingerprint
+}
+}
 ```
 
-The next few blocks download the github repo, change to the main branch, and copy the nginx configuration files into the appropriate directories. The prebuilt html files that were output by jekyll for this site are then copied from the gh-pages branch into the appropriate location for nginx to use them. Finally, nginx is reloaded to enact the changes.
+\pagebreak
 
-```sh
-
-    # Get github pages files
-    cd ~
-    git clone https://github.com/Gabrielc1925/Gabrielc1925.github.io.git
-    cd Gabrielc1925.github.io
-    git checkout main
-
-    # Set up nginx configuration
-    cd nginx_setup
-    cp  -r -f conf.d /etc/nginx
-    cp -f nginx.conf /etc/nginx
-
-    # Set up nginx site html pages
-    mkdir /var/www/gabrielc1925.github.io
-    cd ~/Gabrielc1925.github.io
-    git checkout gh-pages
-    cp ~/Gabrielc1925.github.io/{_pages/dropdown,assets,blog,cv,news,projects,repositories,workflow,404.html,feed.xml,index.html,robots.txt,sitemap.xml} /var/www/gabrielc1925.github.io
-
-    # Reload nginx
-    nginx -s reload
-
-```
-
-At this point Packer is complete and has created a working AMI on my AWS account. It has not saved this AMI to a registry or set up long-term management with Terraform, but the script worked so it is the first step of a CI/CD workflow.
-
-{% endtab %}
-
-{% endtabs %}
-
-The gh-actions workflow has one more job to run still, so it triggers the function to update the HCP Packer registry with the work we did.
+The gh-actions workflow has one more job to run still, so it triggers the function to update the HCP Packer registry with the work we did, including the fingerprint that was saved in the last step.
 
 ```yml
 
