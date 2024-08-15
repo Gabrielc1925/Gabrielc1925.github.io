@@ -3,7 +3,7 @@
 "/.github/workflows/build-deploy-packer-aws.yml",
 and
 "/.github/scripts/create_channel_version.sh"
-</code></pre></div></div> <p>\page break</p> <p>This workflow is triggered by the “build-deploy-packer-aws.yml” file.</p> <p>The first block establishes the timing for when to run this github action. I set it to only run when a change was pushed to the gh-pages branch, as that is the final step after all other checks when a pull request is completed. I don’t want to update my AMI unnecessarily, so I put this github action to run after all other actions are done.</p> <div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Deploy to Packer and AWS</span>
+</code></pre></div></div> <hr> <p>This workflow is triggered by the “build-deploy-packer-aws.yml” file.</p> <p>The first block establishes the timing for when to run this github action. I set it to only run when a change was pushed to the gh-pages branch, as that is the final step after all other checks when a pull request is completed. I don’t want to update my AMI unnecessarily, so I put this github action to run after all other actions are done.</p> <div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Deploy to Packer and AWS</span>
 
 <span class="na">on</span><span class="pi">:</span>
 <span class="na">push</span><span class="pi">:</span>
@@ -46,7 +46,7 @@ and
             <span class="s">version_fingerprint=$(echo "$build" | jq -r '.custom_data.version_fingerprint')</span>
             <span class="s">echo "::set-output name=version_fingerprint::$version_fingerprint"</span>
 
-</code></pre></div></div> <p>\page break</p> <p>Packer build begins by reading the build.pkr.hcl file and loading the plugins listed. It then lists the source for the AMI we will be building and provisioning. I went with a lightweight and low cost Ubuntu LTS 22.04 image as I do not need more than that for this project.</p> <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">
+</code></pre></div></div> <hr> <p>Packer build begins by reading the build.pkr.hcl file and loading the plugins listed. It then lists the source for the AMI we will be building and provisioning. I went with a lightweight and low cost Ubuntu LTS 22.04 image as I do not need more than that for this project.</p> <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">
     </span><span class="n">packer</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="n">required_plugins</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="n">amazon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -91,7 +91,7 @@ and
   </span><span class="c1">#     "setup-deps-gh-pages.sh"</span><span class="w">
   </span><span class="c1">#   ]</span><span class="w">
   </span><span class="c1"># }</span><span class="w">
-</span></code></pre></div></div> <p>\pagebreak</p> <p>I previously used a shell script to provision the resources on the AMI, but have since switched it to use Ansible as a provisioner. Ansible is more relevant to real world applications, but I will include the shell scripting walkthrough on a separate page titled ‘shell script’ since I already wrote about it previously and as an example of past work.</p> <p>When the provisioner script triggers, Ansible takes the playbook file listed and starts to run commands. Ansible has to be installed on the controller computer for this to work, as the ansible plugin references the host file.</p> <p>First, I will install all of the required programs to the remote host. This is following the installation documentation from each program.</p> <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">---</span>
+</span></code></pre></div></div> <hr> <p>I previously used a shell script to provision the resources on the AMI, but have since switched it to use Ansible as a provisioner. Ansible is more relevant to real world applications, but I will include the shell scripting walkthrough on a separate page titled ‘shell script’ since I already wrote about it previously and as an example of past work.</p> <p>When the provisioner script triggers, Ansible takes the playbook file listed and starts to run commands. Ansible has to be installed on the controller computer for this to work, as the ansible plugin references the host file.</p> <p>First, I will install all of the required programs to the remote host. This is following the installation documentation from each program.</p> <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">---</span>
 <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Install Docker, Nginx, and Git</span>
   <span class="na">hosts</span><span class="pi">:</span> <span class="s">all</span>
   <span class="na">become</span><span class="pi">:</span> <span class="kc">true</span>
@@ -213,7 +213,7 @@ and
 <span class="s">version_fingerprint = packer.versionFingerprint</span>
 <span class="err">}</span>
 <span class="err">}</span>
-</code></pre></div></div> <p>\pagebreak</p> <p>The gh-actions workflow has one more job to run still, so it triggers the function to update the HCP Packer registry with the work we did, including the fingerprint that was saved in the last step.</p> <div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div> <hr> <p>The gh-actions workflow has one more job to run still, so it triggers the function to update the HCP Packer registry with the work we did, including the fingerprint that was saved in the last step.</p> <div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="na">update-hcp-packer-channel</span><span class="pi">:</span>
 <span class="na">name</span><span class="pi">:</span> <span class="s">Update HCP Packer channel</span>
 <span class="na">needs</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">build-artifact"</span><span class="pi">]</span>
