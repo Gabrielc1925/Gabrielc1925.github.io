@@ -154,7 +154,7 @@ provisioner "ansible" {
 
 \pagebreak
 
-I previously used a shell script to provision the resources on the AMI, but have since switched it to use Ansible as a provisioner. Ansible is more relevant to real world applications, but I will include the shell scripting walkthrough [on a separate page]({{site.baseurl}}{% link \_projects/shell_script.md %}) since I already wrote about it previously and as an example of past work.
+I previously used a shell script to provision the resources on the AMI, but have since switched it to use Ansible as a provisioner. Ansible is more relevant to real world applications, but I will include the shell scripting walkthrough [on a separate page]({{site.baseurl}}{% link \_projects\shell_script.md %}) since I already wrote about it previously and as an example of past work.
 
 When the provisioner script triggers, Ansible takes the playbook file listed and starts to run commands. Ansible has to be installed on the controller computer for this to work, as the ansible plugin references the host file.
 

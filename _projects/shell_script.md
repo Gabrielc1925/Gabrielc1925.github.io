@@ -2,13 +2,13 @@
 layout: page
 title: Shell Provisioner
 description: Shell Provisioning for packer
-img: assets/img/brackets.pngs
+img: assets/img/brackets.png
 importance: 3
 category: work
 related_publications: false
 ---
 
-**_This is a continuation of the script from the [packer page]({{site.baseurl}}{% link \_projects/packer_aws_backup.md}), using shell scripting to provision resources rather than using ansible_**
+**_This is a continuation of the script from the [packer page]({{site.baseurl}}{% link \_projects\packer_aws_backup.md}), using shell scripting to provision resources rather than using ansible_**
 
 For the shell script, the line referencing a provisioner within the packer manifest is different.
 
