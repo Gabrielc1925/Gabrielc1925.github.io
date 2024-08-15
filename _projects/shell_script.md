@@ -8,7 +8,7 @@ category: work
 related_publications: false
 ---
 
-**_This is a continuation of the script from the [packer page]({{site.baseurl}}{% link /projects/packer_aws_backup.md}), using shell scripting to provision resources rather than using ansible_**
+**_This is a continuation of the script from the packer page, using shell scripting to provision resources rather than using ansible_**
 
 For the shell script, the line referencing a provisioner within the packer manifest is different.
 
