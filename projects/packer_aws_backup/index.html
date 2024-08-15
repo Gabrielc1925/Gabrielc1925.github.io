@@ -1,9 +1,9 @@
 <!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Packer Backup | Gabriel J. Chavez </title> <meta name="author" content="Gabriel J. Chavez"> <meta name="description" content="Automate AMI Creation"> <meta name="keywords" content="DevOps, CI/CD, Terraform, Kubernetes, AWS, Cloud, Automation"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="/assets/img/favicon.ico?85d53cdc642525c2ea19006b5b11cfd1"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://gabrielc1925.github.io/projects/packer_aws_backup/"> <script src="/assets/js/theme.js?a5ca4084d3b81624bcfa01156dae2b8e"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>initTheme();</script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Gabriel J. Chavez </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item "> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item active"> <a class="nav-link" href="/projects/">projects <span class="sr-only">(current)</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/repositories/">repositories </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">cv </a> </li> <li class="nav-item dropdown "> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">submenus </a> <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"> <a class="dropdown-item " href="/projects/">projects</a> <div class="dropdown-divider"></div> </div> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">Packer Backup</h1> <p class="post-description">Automate AMI Creation</p> </header> <article> <p>First on my list of things to do after getting this website up and running is to build up my portfolio of projects. I will be using the Hashicorp suite of products as they are widely used and a good base level of knowledge for anyone who wishes to branch out into other platforms.</p> <p>This first step in the process is to use Packer to create an Amazon Machine Image for use on AWS. This is a very small part of the overall CI/CD workflow, but I am going to do it in steps so that I can explain each file in depth.</p> <p>The files for this project can be found in the Github repo for this website: <a href="https://github.com/Gabrielc1925/Gabrielc1925.github.io" rel="external nofollow noopener" target="_blank">github.com/gabrielc1925/gabrielc1925.github.io</a>.</p> <p>The files use in this basic Packer deployment are:</p> <div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"/build.pkr.hcl",
-"/setup-deps-gh-pages.sh",
+"/ansible/playbook.yml",
 "/.github/workflows/build-deploy-packer-aws.yml",
 and
 "/.github/scripts/create_channel_version.sh"
-</code></pre></div></div> <p>This workflow is triggered by the “build-deploy-packer-aws.yml” file.</p> <p>The first block establishes the timing for when to run this github action. I set it to only run when a change was pushed to the gh-pages branch, as that is the final step after all other checks when a pull request is completed. I don’t want to update my AMI unnecessarily, so I put this github action to run after all other actions are done.</p> <div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Deploy to Packer and AWS</span>
+</code></pre></div></div> <p>\page break</p> <p>This workflow is triggered by the “build-deploy-packer-aws.yml” file.</p> <p>The first block establishes the timing for when to run this github action. I set it to only run when a change was pushed to the gh-pages branch, as that is the final step after all other checks when a pull request is completed. I don’t want to update my AMI unnecessarily, so I put this github action to run after all other actions are done.</p> <div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Deploy to Packer and AWS</span>
 
 <span class="na">on</span><span class="pi">:</span>
 <span class="na">push</span><span class="pi">:</span>
@@ -46,61 +46,52 @@ and
             <span class="s">version_fingerprint=$(echo "$build" | jq -r '.custom_data.version_fingerprint')</span>
             <span class="s">echo "::set-output name=version_fingerprint::$version_fingerprint"</span>
 
-</code></pre></div></div> <p>Packer build begins by reading the build.pkr.hcl file and loading the plugins listed. It then lists the source for the AMI we will be building and provisioning. I went with a lightweight and low cost Ubuntu LTS 22.04 image as I do not need more than that for this project.</p> <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-    <span class="nx">packer</span> <span class="p">{</span>
-    <span class="nx">required_plugins</span> <span class="p">{</span>
-        <span class="nx">amazon</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="nx">source</span>  <span class="o">=</span> <span class="dl">"</span><span class="s2">github.com/hashicorp/amazon</span><span class="dl">"</span>
-        <span class="nx">version</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">~&gt; 1.3.2</span><span class="dl">"</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="p">}</span>
+</code></pre></div></div> <p>\page break</p> <p>Packer build begins by reading the build.pkr.hcl file and loading the plugins listed. It then lists the source for the AMI we will be building and provisioning. I went with a lightweight and low cost Ubuntu LTS 22.04 image as I do not need more than that for this project.</p> <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">
+    </span><span class="n">packer</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="n">required_plugins</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="n">amazon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="n">source</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">"github.com/hashicorp/amazon"</span><span class="w">
+        </span><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"~&gt; 1.3.2"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
 
-    <span class="nx">source</span> <span class="dl">"</span><span class="s2">amazon-ebs</span><span class="dl">"</span> <span class="dl">"</span><span class="s2">github-pages</span><span class="dl">"</span> <span class="p">{</span>
-    <span class="nx">region</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">us-east-1</span><span class="dl">"</span>
-    <span class="nx">source_ami</span>    <span class="o">=</span> <span class="dl">"</span><span class="s2">ami-04a81a99f5ec58529</span><span class="dl">"</span>
-    <span class="nx">instance_type</span>  <span class="o">=</span> <span class="dl">"</span><span class="s2">t2.micro</span><span class="dl">"</span>
-    <span class="nx">ssh_username</span>   <span class="o">=</span> <span class="dl">"</span><span class="s2">ubuntu</span><span class="dl">"</span>
-    <span class="nx">ami_name</span>    <span class="o">=</span> <span class="dl">"</span><span class="s2">Gabrielc1925-github-io_</span><span class="dl">"</span>
-    <span class="nx">ami_regions</span> <span class="o">=</span> <span class="p">[</span><span class="dl">"</span><span class="s2">us-east-1</span><span class="dl">"</span><span class="p">]</span>
-    <span class="p">}</span>
+    </span><span class="n">source</span><span class="w"> </span><span class="s2">"amazon-ebs"</span><span class="w"> </span><span class="s2">"github-pages"</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="n">region</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"us-east-1"</span><span class="w">
+    </span><span class="n">source_ami</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">"ami-04a81a99f5ec58529"</span><span class="w">
+    </span><span class="n">instance_type</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">"t2.micro"</span><span class="w">
+    </span><span class="n">ssh_username</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">"ubuntu"</span><span class="w">
+    </span><span class="n">ami_name</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">"Gabrielc1925-github-io_"</span><span class="w">
+    </span><span class="n">ami_regions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"us-east-1"</span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
 
-</code></pre></div></div> <p>The next step is to begin our build block. The first step is to connect to the HCP packer registry and create a bucket to track our changes and store any completed AMIs in later steps.</p> <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-    <span class="nx">build</span> <span class="p">{</span>
-    <span class="err">#</span> <span class="nx">HCP</span> <span class="nx">Packer</span> <span class="nx">settings</span>
-    <span class="nx">hcp_packer_registry</span> <span class="p">{</span>
-        <span class="nx">bucket_name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Gabrielc1925-github-io</span><span class="dl">"</span>
-        <span class="nx">description</span> <span class="o">=</span> <span class="o">&lt;&lt;</span><span class="nx">EOT</span>
-    <span class="nx">This</span> <span class="nx">is</span> <span class="nx">an</span> <span class="nx">image</span> <span class="k">for</span> <span class="nx">a</span> <span class="nx">backup</span> <span class="k">of</span> <span class="nx">the</span> <span class="nx">github</span> <span class="nx">pages</span> <span class="nx">site</span> <span class="k">for</span> <span class="nx">gabrielc1925</span>
-        <span class="nx">EOT</span>
+</span></code></pre></div></div> <p>The next step is to begin our build block. The first step is to connect to the HCP packer registry and create a bucket to track our changes and store any completed AMIs in later steps.</p> <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">
+    </span><span class="n">build</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="c1"># HCP Packer settings</span><span class="w">
+    </span><span class="n">hcp_packer_registry</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="n">bucket_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Gabrielc1925-github-io"</span><span class="w">
+        </span><span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="n">EOT</span><span class="w">
+    </span><span class="n">This</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">image</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">backup</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">github</span><span class="w"> </span><span class="n">pages</span><span class="w"> </span><span class="n">site</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">gabrielc1925</span><span class="w">
+        </span><span class="n">EOT</span><span class="w">
 
-        <span class="nx">bucket_labels</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="dl">"</span><span class="s2">hashicorp-learn</span><span class="dl">"</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">learn-packer-github-actions</span><span class="dl">"</span><span class="p">,</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="p">}</span>
+        </span><span class="n">bucket_labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"hashicorp-learn"</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"learn-packer-github-actions"</span><span class="p">,</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
 
-</code></pre></div></div> <p>After that the build block specifies the source it is acting on (we only have one above, so this is it), and begins to provision the base image for us. It then runs a provisioner block when the EC2 instance is running, and inputs the commands from the shell scripts specified by the file named “setup-deps-gh-pages.sh.”</p> <p>(After that there is a post processer function that prints the outputs to a file, lists the paths from the volume root for each, and tags the file with the fingerprint from this particular version. This part is not terribly important for our current setup, but can be used later with Terraform to track changed assets. I won’t talk more about those 5 lines of code in this article.)</p> <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-    <span class="nx">sources</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="dl">"</span><span class="s2">source.amazon-ebs.github-pages</span><span class="dl">"</span><span class="p">,</span>
-    <span class="p">]</span>
+</span></code></pre></div></div> <p>After that the build block specifies the source it is acting on (we only have one above, so this is it), and begins to provision the base image for us. It then runs a provisioner block when the EC2 instance is running, and inputs the commands from the source file. In this case it is the ansible playbook named playbook.yml</p> <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Set up Nginx with HTML files from Github Pages using Ansible</span><span class="w">
+</span><span class="n">provisioner</span><span class="w"> </span><span class="s2">"ansible"</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="n">playbook_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"./ansible/playbook.yml"</span><span class="w">
+</span><span class="p">}</span><span class="w">
 
-    <span class="err">#</span> <span class="nb">Set</span> <span class="nx">up</span> <span class="nx">Nginx</span> <span class="kd">with</span> <span class="nx">HTML</span> <span class="nx">files</span> <span class="k">from</span> <span class="nx">github</span> <span class="nx">pages</span>
-    <span class="nx">provisioner</span> <span class="dl">"</span><span class="s2">shell</span><span class="dl">"</span> <span class="p">{</span>
-        <span class="nx">scripts</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="dl">"</span><span class="s2">setup-deps-gh-pages.sh</span><span class="dl">"</span>
-        <span class="p">]</span>
-    <span class="p">}</span>
-
-    <span class="nx">post</span><span class="o">-</span><span class="nx">processor</span> <span class="dl">"</span><span class="s2">manifest</span><span class="dl">"</span> <span class="p">{</span>
-        <span class="nx">output</span>     <span class="o">=</span> <span class="dl">"</span><span class="s2">packer_manifest.json</span><span class="dl">"</span>
-        <span class="nx">strip_path</span> <span class="o">=</span> <span class="kc">true</span>
-        <span class="nx">custom_data</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="nx">version_fingerprint</span> <span class="o">=</span> <span class="nx">packer</span><span class="p">.</span><span class="nx">versionFingerprint</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-
-</code></pre></div></div> <p>I previously used a shell script to provision the resources on the AMI, but have since switched it to use Ansible as a provisioner. This is more relevant to real world applications, but I will include the shell scripting walkthrough below since I already wrote about it previously and as an example of past work.</p> <ul id="provisioning" class="tab" data-tab="1210a181-7f6a-4ce5-bffe-24d5a884a862" data-name="provisioning"> <li class="active" id="provisioning-ansible"> <a href="#">ANSIBLE </a> </li> <li id="provisioning-shell"> <a href="#">SHELL </a> </li> </ul> <ul class="tab-content" id="1210a181-7f6a-4ce5-bffe-24d5a884a862" data-name="provisioning"> <li class="active"> <p>When the provisioner script triggers, Ansible takes the playbook file listed and starts to run commands. Ansible has to be installed on the controller computer for this to work, as the ansible plugin references the host file.</p> <p>First, I will install all of the required programs to the remote host. This is following the installation documentation from each program.</p> <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">---</span>
+  </span><span class="c1"># # Set up Nginx with HTML files from github pages</span><span class="w">
+  </span><span class="c1"># provisioner "shell" {</span><span class="w">
+  </span><span class="c1">#   scripts = [</span><span class="w">
+  </span><span class="c1">#     "setup-deps-gh-pages.sh"</span><span class="w">
+  </span><span class="c1">#   ]</span><span class="w">
+  </span><span class="c1"># }</span><span class="w">
+</span></code></pre></div></div> <p>\pagebreak</p> <p>I previously used a shell script to provision the resources on the AMI, but have since switched it to use Ansible as a provisioner. Ansible is more relevant to real world applications, but I will include the shell scripting walkthrough on a separate page titled ‘shell script’ since I already wrote about it previously and as an example of past work.</p> <p>When the provisioner script triggers, Ansible takes the playbook file listed and starts to run commands. Ansible has to be installed on the controller computer for this to work, as the ansible plugin references the host file.</p> <p>First, I will install all of the required programs to the remote host. This is following the installation documentation from each program.</p> <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">---</span>
 <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Install Docker, Nginx, and Git</span>
   <span class="na">hosts</span><span class="pi">:</span> <span class="s">all</span>
   <span class="na">become</span><span class="pi">:</span> <span class="kc">true</span>
@@ -185,85 +176,44 @@ and
     <span class="na">remote_src</span><span class="pi">:</span> <span class="kc">true</span>
 </code></pre></div></div> <p>Next, I copy over the HTML files that have alreay been created by Jekyll. These are stored in the gh-pages branch.</p> <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Clone html files from github repo to temporary folder</span>
   <span class="na">git</span><span class="pi">:</span>
-  <span class="na">repo</span><span class="pi">:</span> <span class="s2">"</span><span class="s">https://github.com/Gabrielc1925/Gabrielc1925.github.io.git"</span>
-  <span class="na">dest</span><span class="pi">:</span> <span class="s">/etc/tmp/github/gh-pages</span>
-  <span class="na">version</span><span class="pi">:</span> <span class="s">gh-pages</span>
-  <span class="na">update</span><span class="pi">:</span> <span class="s">yes</span>
+    <span class="na">repo</span><span class="pi">:</span> <span class="s2">"</span><span class="s">https://github.com/Gabrielc1925/Gabrielc1925.github.io.git"</span>
+    <span class="na">dest</span><span class="pi">:</span> <span class="s">/etc/tmp/github/gh-pages</span>
+    <span class="na">version</span><span class="pi">:</span> <span class="s">gh-pages</span>
+    <span class="na">update</span><span class="pi">:</span> <span class="s">yes</span>
 
-<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">copy html files from gh-pages to var so it can be served by nginx</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">synchronize html files from gh-pages to var so it can be served by nginx</span>
   <span class="na">copy</span><span class="pi">:</span>
-  <span class="na">src</span><span class="pi">:</span> <span class="s">/etc/tmp/github/gh-pages</span>
-  <span class="na">dest</span><span class="pi">:</span> <span class="s">/var/www</span>
-  <span class="na">remote_src</span><span class="pi">:</span> <span class="kc">true</span>
-</code></pre></div></div> <p>Finally, I test my nginx configuration and then restart the nginx service and enable it so it will start automatically after booting the system.</p> <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-     <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Check nginx configuration syntax</span>
-      <span class="na">command</span><span class="pi">:</span> <span class="s">nginx -t</span>
-      <span class="na">register</span><span class="pi">:</span> <span class="s">nginx_test</span>
-      <span class="na">ignore_errors</span><span class="pi">:</span> <span class="kc">true</span>
+    <span class="na">src</span><span class="pi">:</span> <span class="s">/etc/tmp/github/gh-pages</span>
+    <span class="na">dest</span><span class="pi">:</span> <span class="s">/var/www</span>
+    <span class="na">remote_src</span><span class="pi">:</span> <span class="kc">true</span>
+</code></pre></div></div> <p>Finally, there is a set of commands to test nginx configuration and enable nginx when the system boots.</p> <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Check nginx configuration syntax</span>
+  <span class="na">command</span><span class="pi">:</span> <span class="s">nginx -t</span>
+  <span class="na">register</span><span class="pi">:</span> <span class="s">nginx_test</span>
+  <span class="na">ignore_errors</span><span class="pi">:</span> <span class="kc">true</span>
 
-    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Display nginx syntax check output if it failed</span>
-      <span class="na">debug</span><span class="pi">:</span>
-        <span class="na">var</span><span class="pi">:</span> <span class="s">nginx_test.stderr_lines</span>
-      <span class="na">when</span><span class="pi">:</span> <span class="s">nginx_test.rc != </span><span class="m">0</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Display nginx syntax check output if it failed</span>
+  <span class="na">debug</span><span class="pi">:</span>
+    <span class="na">var</span><span class="pi">:</span> <span class="s">nginx_test.stderr_lines</span>
+  <span class="na">when</span><span class="pi">:</span> <span class="s">nginx_test.rc != </span><span class="m">0</span>
 
-    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Fail the playbook if nginx config is invalid</span>
-      <span class="na">fail</span><span class="pi">:</span>
-        <span class="na">msg</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Nginx</span><span class="nv"> </span><span class="s">configuration</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">invalid.</span><span class="nv"> </span><span class="s">Please</span><span class="nv"> </span><span class="s">fix</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">errors</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">try</span><span class="nv"> </span><span class="s">again."</span>
-      <span class="na">when</span><span class="pi">:</span> <span class="s">nginx_test.rc != </span><span class="m">0</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Fail the playbook if nginx config is invalid</span>
+  <span class="na">fail</span><span class="pi">:</span>
+    <span class="na">msg</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Nginx</span><span class="nv"> </span><span class="s">configuration</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">invalid.</span><span class="nv"> </span><span class="s">Please</span><span class="nv"> </span><span class="s">fix</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">errors</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">try</span><span class="nv"> </span><span class="s">again."</span>
+  <span class="na">when</span><span class="pi">:</span> <span class="s">nginx_test.rc != </span><span class="m">0</span>
 
-    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Restart nginx and enable on boot</span>
-      <span class="na">service</span><span class="pi">:</span>
-        <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
-        <span class="na">enabled</span><span class="pi">:</span> <span class="kc">true</span>
-        <span class="na">state</span><span class="pi">:</span> <span class="s">restarted</span>
-
-</code></pre></div></div> <p>At this point, the provisioning script is complete. Packer creates an output file and registers the AMI with AWS while listing a reference to it on Hashicorp Cloud’s HCP Packer registry.</p> </li> <li> <p>When the provisioner shell triggers the scripts listed in setup-deps-gh-pages.sh, the commands are input into the EC2 instance via SSH. The first few blocks establish procedures for handling response to errors, then download and install Docker and Nginx. Docker is not used for this step of the project, I just added it out of habit. Nginx is then set to start automatically on boot.</p> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-    <span class="c">#!/bin/bash</span>
-    <span class="nb">set</span> <span class="nt">-eu</span> <span class="nt">-o</span> pipefail
-
-    <span class="c"># Add Docker's official GPG key:</span>
-    <span class="nb">sudo </span>apt-get update
-    <span class="nb">sudo </span>apt-get <span class="nb">install </span>ca-certificates curl
-    <span class="nb">sudo install</span> <span class="nt">-m</span> 0755 <span class="nt">-d</span> /etc/apt/keyrings
-    <span class="nb">sudo </span>curl <span class="nt">-fsSL</span> https://download.docker.com/linux/ubuntu/gpg <span class="nt">-o</span> /etc/apt/keyrings/docker.asc
-    <span class="nb">sudo chmod </span>a+r /etc/apt/keyrings/docker.asc
-
-    <span class="c"># Add the repository to apt-get sources:</span>
-    <span class="nb">echo</span> <span class="se">\</span>
-    <span class="s2">"deb [arch=</span><span class="si">$(</span>dpkg <span class="nt">--print-architecture</span><span class="si">)</span><span class="s2"> signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu </span><span class="se">\</span><span class="s2">
-    </span><span class="si">$(</span><span class="nb">.</span> /etc/os-release <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"</span><span class="nv">$VERSION_CODENAME</span><span class="s2">"</span><span class="si">)</span><span class="s2"> stable"</span> | <span class="se">\</span>
-    <span class="nb">sudo tee</span> /etc/apt/sources.list.d/docker.list <span class="o">&gt;</span> /dev/null
-    <span class="nb">sudo </span>apt-get update
-
-    <span class="c"># Install necessary dependencies</span>
-    <span class="nb">sudo </span>apt-get update
-    <span class="nb">sudo </span>apt-get <span class="nb">install</span> <span class="nt">-y</span> git-all nginx docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-    <span class="c"># Configure Nginx to start on boot using systemd</span>
-    <span class="nb">sudo </span>systemctl <span class="nb">enable </span>nginx
-
-</code></pre></div></div> <p>The next few blocks download the github repo, change to the main branch, and copy the nginx configuration files into the appropriate directories. The prebuilt html files that were output by jekyll for this site are then copied from the gh-pages branch into the appropriate location for nginx to use them. Finally, nginx is reloaded to enact the changes.</p> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-    <span class="c"># Get github pages files</span>
-    <span class="nb">cd</span> ~
-    git clone https://github.com/Gabrielc1925/Gabrielc1925.github.io.git
-    <span class="nb">cd </span>Gabrielc1925.github.io
-    git checkout main
-
-    <span class="c"># Set up nginx configuration</span>
-    <span class="nb">cd </span>nginx_setup
-    <span class="nb">cp</span>  <span class="nt">-r</span> <span class="nt">-f</span> conf.d /etc/nginx
-    <span class="nb">cp</span> <span class="nt">-f</span> nginx.conf /etc/nginx
-
-    <span class="c"># Set up nginx site html pages</span>
-    <span class="nb">mkdir</span> /var/www/gabrielc1925.github.io
-    <span class="nb">cd</span> ~/Gabrielc1925.github.io
-    git checkout gh-pages
-    <span class="nb">cp</span> ~/Gabrielc1925.github.io/<span class="o">{</span>_pages/dropdown,assets,blog,cv,news,projects,repositories,workflow,404.html,feed.xml,index.html,robots.txt,sitemap.xml<span class="o">}</span> /var/www/gabrielc1925.github.io
-
-    <span class="c"># Reload nginx</span>
-    nginx <span class="nt">-s</span> reload
-
-</code></pre></div></div> <p>At this point Packer is complete and has created a working AMI on my AWS account. It has not saved this AMI to a registry or set up long-term management with Terraform, but the script worked so it is the first step of a CI/CD workflow.</p> </li> </ul> <p>The gh-actions workflow has one more job to run still, so it triggers the function to update the HCP Packer registry with the work we did.</p> <div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Restart nginx and enable on boot</span>
+  <span class="na">service</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">enabled</span><span class="pi">:</span> <span class="kc">true</span>
+    <span class="na">state</span><span class="pi">:</span> <span class="s">restarted</span>
+</code></pre></div></div> <p>At this point Packer is complete and has created a working AMI on my AWS account. It then saves this AMI to the AWS registry, and saves the information needed to locate it later to the local file for upload to the Haschicorp cloud via HCP Packer.</p> <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">post-processor "manifest" {</span>
+<span class="s">output     = "packer_manifest.json"</span>
+<span class="s">strip_path = </span><span class="kc">true</span>
+<span class="s">custom_data = {</span>
+<span class="s">version_fingerprint = packer.versionFingerprint</span>
+<span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></div> <p>\pagebreak</p> <p>The gh-actions workflow has one more job to run still, so it triggers the function to update the HCP Packer registry with the work we did, including the fingerprint that was saved in the last step.</p> <div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="na">update-hcp-packer-channel</span><span class="pi">:</span>
 <span class="na">name</span><span class="pi">:</span> <span class="s">Update HCP Packer channel</span>
 <span class="na">needs</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">build-artifact"</span><span class="pi">]</span>
