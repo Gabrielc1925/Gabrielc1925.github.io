@@ -226,15 +226,18 @@ First, I will install all of the required programs to the remote host. This is f
         state: present
 ```
 
-Next, I will start to configure the files to be served. This begins with enabling nginx to start when the system boots
+Next, I will start to configure the files to be served. This begins with creating a directory to store temporary files
 
 ```yaml
 - name: configure files to be served
   hosts: all
   become: true
   tasks:
-    - name: enable nginx on system startup
-      command: systemctl enable nginx
+    - name: Create directory for temporary files
+      file:
+        path: /etc/tmp/github
+        state: directory
+        mode: "0775"
 ```
 
 Then, I clone the github repo and copy the nginx configuration files that are needed:
@@ -243,18 +246,14 @@ Then, I clone the github repo and copy the nginx configuration files that are ne
 - name: get github pages files
   git:
     repo: "https://github.com/Gabrielc1925/Gabrielc1925.github.io.git"
-    dest: "{{ ansible_env.HOME }}/Gabrielc1925.github.io"
+    dest: /etc/tmp/github/Gabrielc1925.github.io
     version: main
 
-- name: Copy nginx conf.d directory
+- name: Copy nginx configuration files
   copy:
-    src: "{{ ansible_env.HOME }}/Gabrielc1925.github.io/nginx_setup/conf.d"
-    dest: /etc/nginx/conf.d
-
-- name: Copy nginx configuration file
-  copy:
-    content: "{{ ansible_env.HOME }}/Gabrielc1925.github.io/nginx_setup/nginx.conf"
-    dest: /etc/nginx/nginx.conf
+    src: /etc/tmp/github/Gabrielc1925.github.io/nginx_setup/nginx/
+    dest: /etc/nginx
+    remote_src: true
 ```
 
 Next, I copy over the HTML files that have alreay been created by Jekyll. These are stored in the gh-pages branch.
@@ -262,10 +261,85 @@ Next, I copy over the HTML files that have alreay been created by Jekyll. These 
 ```yaml
 - name: Clone html files from github repo to temporary folder
   git:
+<<<<<<< HEAD
     repo: "https://github.com/Gabrielc1925/Gabrielc1925.github.io.git"
     dest: /etc/tmp/github/gh-pages
     version: gh-pages
     update: yes
+=======
+  repo: "https://github.com/Gabrielc1925/Gabrielc1925.github.io.git"
+  dest: /etc/tmp/github/gh-pages
+  version: gh-pages
+  update: yes
+
+- name: copy html files from gh-pages to var so it can be served by nginx
+  copy:
+  src: /etc/tmp/github/gh-pages
+  dest: /var/www
+  remote_src: true
+```
+
+Finally, I test my nginx configuration and then restart the nginx service and enable it so it will start automatically after booting the system.
+
+```yaml
+
+     - name: Check nginx configuration syntax
+      command: nginx -t
+      register: nginx_test
+      ignore_errors: true
+
+    - name: Display nginx syntax check output if it failed
+      debug:
+        var: nginx_test.stderr_lines
+      when: nginx_test.rc != 0
+
+    - name: Fail the playbook if nginx config is invalid
+      fail:
+        msg: "Nginx configuration is invalid. Please fix the errors and try again."
+      when: nginx_test.rc != 0
+
+    - name: Restart nginx and enable on boot
+      service:
+        name: nginx
+        enabled: true
+        state: restarted
+
+```
+
+At this point, the provisioning script is complete. Packer creates an output file and registers the AMI with AWS while listing a reference to it on Hashicorp Cloud's HCP Packer registry.
+
+{% endtab %}
+
+{% tab Provisioning SHELL %}
+
+When the provisioner shell triggers the scripts listed in setup-deps-gh-pages.sh, the commands are input into the EC2 instance via SSH. The first few blocks establish procedures for handling response to errors, then download and install Docker and Nginx. Docker is not used for this step of the project, I just added it out of habit. Nginx is then set to start automatically on boot.
+
+```sh
+
+    #!/bin/bash
+    set -eu -o pipefail
+
+    # Add Docker's official GPG key:
+    sudo apt-get update
+    sudo apt-get install ca-certificates curl
+    sudo install -m 0755 -d /etc/apt/keyrings
+    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+    sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+    # Add the repository to apt-get sources:
+    echo \
+    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    sudo apt-get update
+
+    # Install necessary dependencies
+    sudo apt-get update
+    sudo apt-get install -y git-all nginx docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+    # Configure Nginx to start on boot using systemd
+    sudo systemctl enable nginx
+>>>>>>> main
 
 - name: synchronize html files from gh-pages to var so it can be served by nginx
   copy:
