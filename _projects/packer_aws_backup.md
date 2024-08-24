@@ -1,12 +1,15 @@
 ---
 layout: page
-title: Packer Backup
-description: Automate AMI Creation
-img: assets/img/CI_CD_pipeline.png
-importance: 1
-category: work
+#title: Packer Backup
+permalink: /projects/packer_aws_backup/
+# description: Automate AMI Creation
+# img: assets/img/packer-ansible-project.jpg
+# importance: 1
+# category: work
 related_publications: false
 ---
+
+# Packer Backup
 
 First on my list of things to do after getting this website up and running is to build up my portfolio of projects. I will be using the Hashicorp suite of products as they are widely used and a good base level of knowledge for anyone who wishes to branch out into other platforms.
 

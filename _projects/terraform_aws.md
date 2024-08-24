@@ -1,12 +1,15 @@
 ---
 layout: page
-title: Terraform Deployment to Aws
-description: Deploy to AWS from Packer AMI
-img: assets/img/CI_CD_TF_AWS.png
-importance: 2
-category: work
+# title: Terraform Deployment to Aws
+permalink: /projects/terraform_aws/
+# description: Deploy to AWS from Packer AMI
+# img: assets/img/terraform-deploy-project.jpg
+# importance: 2
+# category: work
 related_publications: false
 ---
+
+# Terraform Deployment to AWS
 
 The next thing to do is to use Terraform to create resources in AWS from my Packer image. Terraform can use separate files to host data and variables, but I decided to keep it all in one file since this is a small project and that will help to simplify things.
 

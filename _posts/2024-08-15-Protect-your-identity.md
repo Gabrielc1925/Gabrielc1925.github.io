@@ -5,6 +5,7 @@ date: 2024-08-14 07:45:30
 description: How to protect your identity from bad actors
 tags: personal, identity
 categories: personal
+related publications: false
 ---
 
 Living in the last few dacades have seen us become largely desensitized to the large number of data breaches that have been occuring and the massive risk of our identity getting stolen. There was a recent data breach that has the largest threat potential ever however, and we all need to change the way we handle our identity to prevent future problems.

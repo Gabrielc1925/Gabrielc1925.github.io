@@ -1,12 +1,15 @@
 ---
 layout: page
-title: Shell Provisioner
-description: Shell Provisioning for packer
-img: assets/img/brackets.png
-importance: 3
-category: work
+# title: Shell Provisioner
+permalink: /projects/shell_script/
+# description: Shell Provisioning for packer
+# img: assets/img/brackets.png
+# importance: 3
+# category: work
 related_publications: false
 ---
+
+# Shell Provisioner
 
 **_This is a continuation of the script from the packer page, using shell scripting to provision resources rather than using ansible_**
 
