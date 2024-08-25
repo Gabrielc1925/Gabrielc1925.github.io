@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Protect your identity
-date: 2024-08-14 07:45:30
+date: 2024-08-15 07:45:30
 description: How to protect your identity from bad actors
 tags: personal, identity
 categories: personal
