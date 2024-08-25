@@ -13,7 +13,7 @@ related_publications: false
 
 The next thing to do is to use Terraform to create resources in AWS from my Packer image. Terraform can use separate files to host data and variables, but I decided to keep it all in one file since this is a small project and that will help to simplify things.
 
-I begun by maing a [main.tf](https://github.com/Gabrielc1925/Gabrielc1925.github.io/blob/main/main.tf) file to hold my Terraform configuration. The first block defines the provider plugins that are needed. For this project, I will be using the cloud platform for HCP, as that is where I stored my Packer files. I also will be using AWS, since that is where I will be deploying the image to.
+I begun by making a [main.tf](https://github.com/Gabrielc1925/Gabrielc1925.github.io/blob/main/main.tf) file to hold my Terraform configuration. The first block defines the provider plugins that are needed. For this project, I will be using the cloud platform for HCP, as that is where I stored my Packer files. I also will be using AWS, since that is where I will be deploying the image to.
 
 ```tf
 terraform {
@@ -112,7 +112,7 @@ data "aws_security_group" "public" {
 After provisioning resources with this, I still could not access the served webpage, so I assumed the problem was somewhere within the instance.
 Finally, I realized that I had forgot to allow the nginx server to listen on ipv4. So my ipv4 address that I was trying to connect to was not being recognized internally by the nginx server.
 
-One line of code later, I was able to access my webpage. I fixed the offending code in the source file, and was able to move on to checking if my teraform code could provision a VPC.
+One line of code later, I was able to access my webpage. I fixed the offending code in the source file, and was able to move on to checking if my terraform code could provision a VPC.
 
 First, I started with basic provisioning of a VPC and the various resources within a VPC including an internet gateway, a network interface, and a subnet.
 
