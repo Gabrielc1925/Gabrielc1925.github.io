@@ -46,3 +46,4 @@ jobs:
         with:
           event-type: prettier-failed-on-pr
           client-payload: '{"pr_number": "${{ github.event.number }}", "artifact_url": "${{ steps.artifact-upload.outputs.artifact-url }}", "run_id": "${{ github.run_id }}"}'
+# If you are having problems repeatedly, follow the instructions at https://prettier.io/docs/en/install.html to run prettier manually.
