@@ -8,7 +8,7 @@ categories: personal
 related publications: false
 ---
 
-Living in the last few dacades have seen us become largely desensitized to the large number of data breaches that have been occuring and the massive risk of our identity getting stolen. There was a recent data breach that has the largest threat potential ever however, and we all need to change the way we handle our identity to prevent future problems.
+Living in the last few decades have seen us become largely desensitized to the large number of data breaches that have been occurring and the massive risk of our identity getting stolen. There was a recent data breach that has the largest threat potential ever however, and we all need to change the way we handle our identity to prevent future problems.
 
 In the post titled [Hackers may have stolen the Social Security numbers of every American. How to protect yourself](https://www.latimes.com/business/story/2024-08-13/hacker-claims-theft-of-every-american-social-security-number#:~:text=According%20to%20a%20class%2Daction,staffing%20agencies%20and%20others%20doing), the details of the latest data breach are explained. Basically, a data broker was hacked and all of our most sensitive information has been leaked and is now for sale to bad actors. This includes Social Security numbers, full name, date of birth, address, and phone number for the affected individuals. There is no information on who is affected yet, but this is the opportunity we have to get ahead of the mess and protect ourselves from major losses from this and other data breaches.
 
@@ -74,7 +74,7 @@ This is the company that helps prevent utility fraud. They have an extra step at
 
 Finally, this is the system run by the government and used to prevent identity fraud when signing up for new jobs.
 [Information about it is at this link](https://www.e-verify.gov/employees/employee-self-services/mye-verify/self-lock)
-Click "myE-Verify account" under the 'How To Use Selv Lock' heading.
+Click "myE-Verify account" under the 'How To Use Self Lock' heading.
 
 ---
 

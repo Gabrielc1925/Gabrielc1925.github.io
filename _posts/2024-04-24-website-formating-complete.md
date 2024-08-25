@@ -11,7 +11,7 @@ I have completed the initial task of getting the website set up. This has overal
 
 I especially appreciate that there are wonderful example files for all the different types of content that I might want to write. The auto-checking Github Actions and the thorough README file and accompanying documentation made this whole process pain free. There are a couple formatting issues on my CV related to dates that I need to figure out, but other than that everything worked perfectly out of the box.
 
-<hr>
+---
 
 ## Next Steps
 

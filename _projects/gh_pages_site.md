@@ -68,7 +68,7 @@ I could then use this further to practice with automated provisioning via Terraf
 
 I had used Ansible previously about a year ago, but needed a refresher on how to write playbooks. I ended up learning much more than I initially expected I needed to learn, as I was using Ansible locally previously rather than interacting with a cloud provider through third-party modules.
 
-One major problem for me was that I misunderstood how Ansible interacted with file creation and naming. I was copying parts of a git repo to the project, and then moving certain files from the local repo to where they needed to live long-term. I was referencing files that did not exist, so they were not getting copied to where they should belong - and then the site was not behaving as expected. I eventually figured out how to use Packer's debug mode to keep the created AMI open so that I could SSH into it andfigure out where the files were. This allowed me to correct the name I was referencing, and get everything working properly.
+One major problem for me was that I misunderstood how Ansible interacted with file creation and naming. I was copying parts of a git repo to the project, and then moving certain files from the local repo to where they needed to live long-term. I was referencing files that did not exist, so they were not getting copied to where they should belong - and then the site was not behaving as expected. I eventually figured out how to use Packer's debug mode to keep the created AMI open so that I could SSH into it and figure out where the files were. This allowed me to correct the name I was referencing, and get everything working properly.
 
 ---
 
