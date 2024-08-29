@@ -4,7 +4,7 @@ title: Highlands Ranch Masjid Collaboration
 description: Work with a team to create containerized website solution
 img: assets/img/HR-masjid-orgChart.jpg
 importance: 2
-category: fun
+category: work
 related_publications: false
 toc:
   sidebar: left
