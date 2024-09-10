@@ -1,0 +1,29 @@
+---
+layout: about
+title: about
+permalink: /
+subtitle: From Pharmacy Management to the Tech World
+
+profile:
+  align: right
+  image: prof_pic.jpg
+  image_circular: false # crops the image to make it circular
+  more_info: >
+    <p>(505)688-9404</p>
+    <p>Gabrielc1925@gmail.com</p>
+    <p>Aurora, Colorado 80012</p>
+
+news: false # includes a list of news items
+selected_papers: false # includes a list of papers marked as "selected={true}"
+social: true # includes social icons at the bottom of the page
+---
+
+Over the course of my professional career I have dealt with constant problems caused by mismanagement and lack of planning surrounding software updates and new program rollouts. My previous job had me working with decade old technology that was outdated when it was released, and they were unwilling to put the resources needed into maintaining and updating it to bring it up to speed.
+
+Every software update brought a new bug that every worker at the multi-million dollar corporation would have to learn how to navigate, or it would outright crash the system for several hours until they could roll back the update or create a quick, bug-filled patch to get the production system back online.
+
+Eventually, for a number of reasons, I decided to finally follow my dream of working in tech and make a career change. I started studying basics of cybersecurity in my free time, and teaching myself javascript. At a gathering of friends, I was introduced to someone who worked in tech and had mentored others previously. He introduced me to the practice of DevOps, and helped me understand the benefits of using it.
+
+I could quickly see the benefits of DevOps and using a CI/CD philosophy to improve agility and reliability. How many of the issues that had plagued my systems for years would have been ameliorated if my company had a DevOps first mindset? How could a DevOps team reduce the post-rollout problems such as lack of responsiveness due to insufficient resources. The more I learned, the more I was sure that this is what I want to help companies do - if for not other reason than to prevent their end-users from having the same poor experience that I did.
+
+Fast forward to over a year later and my resolve has only solidified as I learned more.  I continue to be excited to learn and to use what I have learned to ensure that developers have what they need to work efficiently, and to ensure that the final product is stable, reliable, fast, and secure.
