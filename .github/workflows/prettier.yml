@@ -29,7 +29,7 @@ jobs:
         if: ${{ failure() }}
         run: |
           npx prettier . --write
-          git diff -- . ':(exclude)package-lock.json' ':(exclude)package.json' > diff.txt
+          git diff -- . ':(exclude)package-lock.json' ':(exclude)package.json' ':(exclude).code-workspace' > diff.txt
           npm install -g diff2html-cli
           diff2html -i file -s side -F diff.html -- diff.txt
       - name: Upload html diff ⬆️
