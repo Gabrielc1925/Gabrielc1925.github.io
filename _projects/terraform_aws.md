@@ -1,11 +1,11 @@
 ---
 layout: page
-# title: Terraform Deployment to Aws
+title: Terraform Deployment to Aws
 permalink: /projects/terraform_aws/
-# description: Deploy to AWS from Packer AMI
-# img: assets/img/terraform-deploy-project.jpg
-# importance: 2
-# category: work
+description: Deploy to AWS from Packer AMI
+img: assets/img/terraform-deploy-project.jpg
+importance: 6
+category: work
 related_publications: false
 ---
 

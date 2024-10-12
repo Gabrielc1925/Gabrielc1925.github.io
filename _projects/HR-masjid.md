@@ -3,7 +3,7 @@ layout: page
 title: Highlands Ranch Masjid Collaboration
 description: Work with a team to create containerized website solution
 img: assets/img/HR-masjid-orgChart.jpg
-importance: 2
+importance: 3
 category: work
 related_publications: false
 toc:

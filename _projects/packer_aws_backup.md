@@ -1,11 +1,11 @@
 ---
 layout: page
-#title: Packer Backup
+title: Packer Backup
 permalink: /projects/packer_aws_backup/
-# description: Automate AMI Creation
-# img: assets/img/packer-ansible-project.jpg
-# importance: 1
-# category: work
+description: Automate AMI Creation
+img: assets/img/packer-ansible-project.jpg
+importance: 4
+category: work
 related_publications: false
 ---
 

@@ -1,11 +1,11 @@
 ---
 layout: page
-# title: Shell Provisioner
+title: Shell Provisioner
 permalink: /projects/shell_script/
-# description: Shell Provisioning for packer
-# img: assets/img/brackets.png
-# importance: 3
-# category: work
+description: Shell Provisioning for packer
+img: assets/img/brackets.png
+importance: 5
+category: work
 related_publications: false
 ---
 
