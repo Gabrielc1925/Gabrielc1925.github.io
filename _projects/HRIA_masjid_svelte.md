@@ -12,9 +12,10 @@ toc:
 
 ## Introduction
 
-As the original project went on hiatus, I decided to take the opportunity to learn Sveltekit and relaunch the website using that framework.  This new website is a work in progress, but I wanted to document what I have done so far.  
-The goal is to create a modular website that can be easily customized and deployed for a different masjid with minimal effort.  I am builiding it in a way that will allow for future expansion and customization options for the masjid.
+As the original project went on hiatus, I decided to take the opportunity to learn Sveltekit and relaunch the website using that framework. This new website is a work in progress, but I wanted to document what I have done so far.  
+The goal is to create a modular website that can be easily customized and deployed for a different masjid with minimal effort. I am builiding it in a way that will allow for future expansion and customization options for the masjid.
 The current stack includes:
+
   - Sveltekit for the base frontend and backend framework
   - Supabase running Postgres to serve as the database layer
   - Drizzle ORM to handle communication between the Sveltekit app and the Postgres database
@@ -23,19 +24,19 @@ The current stack includes:
 
 ### Link to the project
 
-[github.com/Gabrielc1925/HRIA-Masjid-Website](https://github.com/Gabrielc1925/HRIA-Masjid-Website)
+[github.com/three-knots/HRIA_Website](https://github.com/three-knots/HRIA_Website)
 
 ---
 
 ## Why Sveltekit?
 
-I chose to use Sveltekit for a few reasons.  First, I wanted to learn a new framework, and Sveltekit is one of the newer ones on the block.  Second, I wanted to try and build a website that would be easier to maintain and extend in the future, and Sveltekit seems to be a good choice for that.  Third, I wanted to try and build a website that would be more secure, and Sveltekit has a good reputation in that area.
-Additionally, I want to be able to use a very lightweight framework that doesn't require a lot of heavy lifting from the server to deliver the website to the user.  This will allow me to focus on other areas of the project that need attention.
+I chose to use Sveltekit for a few reasons. First, I wanted to learn a new framework, and Sveltekit is one of the newer ones on the block. Second, I wanted to try and build a website that would be easier to maintain and extend in the future, and Sveltekit seems to be a good choice for that.  Third, I wanted to try and build a website that would be more secure, and Sveltekit has a good reputation in that area.
+Additionally, I want to be able to use a very lightweight framework that doesn't require a lot of heavy lifting from the server to deliver the website to the user. This will allow me to focus on other areas of the project that need attention.
 I want something fast, but also able to handle complicated interactions so that I can implement features like tool sharing, group event scheduling, chat, and more.
 
 ## Why Supabase?
 
-Supabase is a relatively new player in the database space, but it has a lot of potential.  It is built on Postgres, so it inherits a lot of the strengths of that database system.  It also has a lot of additional features that make it easier to develop and manage a database layer.  I am using the PostgresSQL version, but there is also a Realtime version that includes a lot of functionality for building collaborative applications. 
+Supabase is a relatively new player in the database space, but it has a lot of potential. It is built on Postgres, so it inherits a lot of the strengths of that database system. It also has a lot of additional features that make it easier to develop and manage a database layer. I am using the PostgresSQL version, but there is also a Realtime version that includes a lot of functionality for building collaborative applications. 
 
 ## Branching methodology
 
@@ -43,7 +44,7 @@ I chose to stick with the trunk-based branching methodology as we had planned fo
 
 ## Local Development Environment
 
-I have struggled with getting a containerized development environment working, as the setup and configuration of the database alongside the application has been difficult.  I have instead set up an ansible playbook that will setup all the dependencies locally to allow for a quick start to development.  This is not a perfect solution, but it is a step in the right direction.
+I have struggled with getting a containerized development environment working, as the setup and configuration of the database alongside the application has been difficult. I have instead set up an ansible playbook that will setup all the dependencies locally to allow for a quick start to development. This is not a perfect solution, but it is a step in the right direction.
 
 ## Website Features
 
