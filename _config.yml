@@ -220,6 +220,7 @@ exclude:
   - INSTALL.md
   - LICENSE
   - lighthouse_results/
+  - nginx_setup/
   - package.json
   - package-lock.json
   - _pages/about_einstein.md
