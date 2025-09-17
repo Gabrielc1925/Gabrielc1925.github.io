@@ -27,26 +27,16 @@ work:
       and easy setup and customization
     url: https://www.linkedin.com/company/threeknots/
     highlights:
-      - Leveraged Docker and Nginx to establish a local development environment, increasing
-        reliability of changes deployed to production.
-      - Authored CI/CD workflows to programmatically build and deploy portfolio website
-        hosted on GitHub.
-      - Was able to troubleshoot GitHub Actions workflows and alter development practices
-        to ensure more consistent and reliable deployment.
-      - Standardized file hierarchy to meet expectations of template, automated prettier
-        script to ensure readability of code across repo, solved dependencies for third-party
-        plugin functionality.
-      - Developed and tested disaster recovery plan by configuring failover of site to
-        AWS, hosted on Nginx in EC2.
-      - Implemented DNS resolution (AWS Route53), load balancing (ELB), and SSL/TLS certificate
-        management (ACM).
-      - Engineered CI/CD on a separate project to develop a containerized and easily deployable
-        website solution.
-      - Planned out SDLC framework, stood up local dev and staging environments, documentation
-        pages.
+      - Used Terraform, Ansible, Docker, and Github Actions to create IaC and workflows that programmatically build infrastructure for and deploy portfolio website to AWS.
+      - Used IaC to create and manage network infrastructure, and automated disaster recovery.
+      - Engineered CI/CD on a separate project to develop a containerized and easily deployable website solution.
+      - Planned out SDLC framework, stood up local dev and staging environments, documentation pages.
       - Worked asynchronously with a small team of DevOps Engineers and Developers.
-      - Used Slack, Jira, Miro, GitHub, Docker, and VSCode for planning and collaborative
-        work.
+      - Used Slack, Jira, Miro, GitHub, Docker, and VSCode for planning and collaborative work.
+      - Learning basic implementation of products such as Kubernetes, Golang, and Python.
+      - Personal projects coded in Svelte, with the use of Supabase, and backend from Sveltekit.
+      - Experimented with the use of AI for assistance with complicated problems, but due to the release of Svelte 5 was unable to get reliably useful responses from it.
+      - Next goals after gaining some level of mastery over Kubernetes is to experiment with observability tools and then begin delving further into microservices architecture, with loosely coupled asynchronous messaging.
   - name: Walgreens
     position: Pharmacy Manager in Denver, CO and Taos, NM
     startDate: "2017-05-31"

@@ -46,7 +46,7 @@ The downside to freezing all of your accounts, is that you have to manage more p
 
 ### TransUnion
 
-[This is the link](https://www.transunion.com/credit-freeze) to freeze your TransUnion credit report. Be sure to verify the URL of the website you are visiting to ensure that it does not look suspicious. If in doubt, don't put in your SSN.
+(Link Removed - you'll have to google it) to freeze your TransUnion credit report. Be sure to verify the URL of the website you are visiting to ensure that it does not look suspicious. If in doubt, don't put in your SSN.
 Click "Add A Freeze" to get started.
 
 ### Equifax
@@ -67,7 +67,7 @@ Click "Register" at the top of the page to get started.
 
 ### NCTUE
 
-[Here is the link](https://www.exchangeservicecenter.com/Freeze/#/)
+(Link Removed)
 This is the company that helps prevent utility fraud. They have an extra step at the end that you cannot forget to do. Be sure to save the code that is provided at the end of the setup process for freezing your account. This code will be needed to unfreeze the account later.
 
 ### UCSIS, also known as E-Verify
